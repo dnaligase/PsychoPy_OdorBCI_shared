@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2020.2.4),
-    on Fri Oct  2 19:56:32 2020
+    on Sun Oct  4 16:48:00 2020
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -86,7 +86,14 @@ defaultKeyboard = keyboard.Keyboard()
 # Initialize components for Routine "code_initial"
 code_initialClock = core.Clock()
 import random
+import serial
+
 from time import sleep
+
+#port settings
+settings = {"port": "COM3",
+                  "baudrate": 115200,
+                  "timeout": 1}
 
 #randomize random
 random.seed()
@@ -95,7 +102,7 @@ random.seed()
 smells=[1,2,3,4]
 
 #initialize odor names
-odor_keys_list = ['coffee', 'citrus', 'vanilla', 'null']
+odor_keys_list = ['3', '5', '7', 'Null']
 
 #create odor counter
 odor_dict = {key: 0 for key in odor_keys_list}
@@ -108,7 +115,7 @@ random.shuffle(symbols_set)
 
 #initialise dict for symbols
 symbols={}
-for i in range(0,4):
+for i in range(4):
     symbols[i]=symbols_set[i]
 
 #set study_number
@@ -123,6 +130,40 @@ trial_number=0
 #set limiter for each stimulus
 limit_study = 2
 limit_test = 2
+
+
+
+def eject(smell_correct):
+    
+    """Eject the stimulus given selected odor. See params in serial.Serial() documentation."""
+    
+    if "Null" != odor_keys_list[smell_correct]:
+        msg = "w" + odor_keys_list[smell_correct] + ";" + " 1\n" 
+        ser.write(msg.encode())
+        print("The following command has been sent: \n" +  ">" + msg)
+    else:
+        #just go on if the stimulus is empty
+        #Maybe it's better to include this part in the statement above
+        #as the user will hear the "pss" sound
+        pass
+
+
+def close_current_capsule(smell_correct):
+    
+    """Stop the last stimulus. See params in serial.Serial() documentation."""
+    
+    if "Null" != odor_keys_list[smell_correct]:
+        msg = "w" + odor_keys_list[smell_correct] + ";" + " 0\n" 
+        ser.write(msg.encode())
+        print("The following command has been sent: \n" +  ">" + msg)
+    else:
+        #just go on if the stimulus is empty
+        #Maybe it's better to include this part in the statement above
+        #as the user will hear the "pss" sound
+        pass
+
+print("Initialized successfully.")
+
 
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
@@ -172,6 +213,9 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
 
 # Initialize components for Routine "code_study"
 code_studyClock = core.Clock()
+    #open port
+    ser = serial.Serial(**settings)
+    print("The port has been opened.")
 
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
@@ -270,6 +314,9 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
 
 # Initialize components for Routine "code_test"
 code_testClock = core.Clock()
+    #open port
+    ser = serial.Serial(**settings)
+    print("The port has been opened.")
 
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
@@ -707,20 +754,24 @@ for thisStudy_trial in Study_trials:
     #reset name of file to display
     image_for_study="stimuli/"
     
-    #choose the stimuli
-    correct_smell=random.randrange(4)
+    #choose the stimulus
+    smell_correct=random.randrange(4)
     
+    #update number of stimuli presented
     while True:
-        if odor_dict[odor_keys_list[correct_smell]] < limit_study:
-            odor_dict[odor_keys_list[correct_smell]] += 1
+        if odor_dict[odor_keys_list[smell_correct]] < limit_study:
+            odor_dict[odor_keys_list[smell_correct]] += 1
             break
             
         else:
-            correct_smell = random.randrange(4)
+            smell_correct = random.randrange(4)
             continue
     
+    #open port and eject stimulus
+    open_and_eject(smell_correct)
+    
     #set correct symbol
-    correct_symbol=symbols[correct_smell]
+    correct_symbol=symbols[smell_correct]
     
     #create name of file to display
     for i in range(4):
@@ -744,7 +795,7 @@ for thisStudy_trial in Study_trials:
     trial_number+=1
     
     #add data to the file
-    thisExp.addData('correct_smell', correct_smell)
+    thisExp.addData('correct_smell', smell_correct)
     thisExp.addData('correct_symbol', correct_symbol)
     thisExp.addData('image_for_study', image_for_study)
     thisExp.addData('correct_key', correct_key)
@@ -795,6 +846,8 @@ for thisStudy_trial in Study_trials:
     for thisComponent in code_studyComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
+    #shut down current working capsule (stops stimulus)
+    close_current_capsule(smell_correct)
     # the Routine "code_study" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1075,6 +1128,7 @@ for thisStudy_trial in Study_trials:
     if sum(odor_dict.values()) == limit_study*4:
             odor_dict = {key: 0 for key in odor_keys_list}
             Study_trials.finished = True
+            ser.close()
     # keep track of which components have finished
     codeStudy_FinishedComponents = []
     for thisComponent in codeStudy_FinishedComponents:
@@ -1457,14 +1511,17 @@ for thisTest_trial in Test_trials:
             smell_correct = random.randrange(4)
             continue
     
+    #open port and eject stimulus
+    eject(smell_correct)
+    
     #set correct symbol
-    correct_symbol=symbols[correct_smell]
+    correct_symbol=symbols[smell_correct]
     
     #reset name of file to siplay
     image_for_test="stimuli/"
     
     #create name of file to display
-    for i in range(0,4):
+    for i in range(4):
         image_for_test +='b'
         image_for_test +=str(test_display_order[i])
     image_for_test +='.jpeg'
@@ -1475,7 +1532,7 @@ for thisTest_trial in Test_trials:
     trial_number+=1
         
     #add data to the file
-    thisExp.addData('correct_smell', correct_smell)
+    thisExp.addData('correct_smell', smell_correct)
     thisExp.addData('correct_symbol', correct_symbol)
     thisExp.addData('image_for_study', image_for_study)
     thisExp.addData('test_number', test_number)
@@ -1525,6 +1582,8 @@ for thisTest_trial in Test_trials:
     for thisComponent in code_testComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
+    #shut down current working capsule (stops stimulus)
+    close_current_capsule(smell_correct)
     # the Routine "code_test" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1797,6 +1856,7 @@ for thisTest_trial in Test_trials:
     # update component parameters for each repeat
     if sum(odor_dict.values()) == limit_test*4:
             Test_trials.finished = True
+            ser.close()
     # keep track of which components have finished
     codeTest_FinishedComponents = []
     for thisComponent in codeTest_FinishedComponents:
