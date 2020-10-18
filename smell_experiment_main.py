@@ -1,8 +1,8 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2020.2.4),
-    on Sun Oct  4 16:48:00 2020
+    on Sun Oct 18 23:15:32 2020
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -67,8 +67,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 # Start Code - component code to be run before the window creation
 
 # Setup the Window
-win = visual.Window(
-    size=(1024, 768), fullscr=True, screen=0, 
+win = visual.Window(fullscr=False, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -213,9 +212,6 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
 
 # Initialize components for Routine "code_study"
 code_studyClock = core.Clock()
-    #open port
-    ser = serial.Serial(**settings)
-    print("The port has been opened.")
 
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
@@ -314,9 +310,6 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
 
 # Initialize components for Routine "code_test"
 code_testClock = core.Clock()
-    #open port
-    ser = serial.Serial(**settings)
-    print("The port has been opened.")
 
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
@@ -745,6 +738,25 @@ for thisStudy_trial in Study_trials:
     # ------Prepare to start Routine "code_study"-------
     continueRoutine = True
     # update component parameters for each repeat
+    #open port
+    while continueRoutine:
+        try:
+            ser = serial.Serial(**settings)
+            print("The port has been opened.")
+            
+        except (FileNotFoundError, serial.SerialException): 
+            print("Study session error. Double check the port!")
+            askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
+            
+            if askedInput == "y":
+                continue
+            elif askedInput == "n":
+                print("Finishing experiment...")
+                core.quit()
+            else:
+                print("Didn't get your input. Try Y or N next time.\nTrying to open the port now...")
+    
+    
     study_display_order=['t','s','c','z']
     
     #shuffle order to present symbols
@@ -768,7 +780,7 @@ for thisStudy_trial in Study_trials:
             continue
     
     #open port and eject stimulus
-    open_and_eject(smell_correct)
+    eject(smell_correct)
     
     #set correct symbol
     correct_symbol=symbols[smell_correct]
@@ -1493,6 +1505,24 @@ for thisTest_trial in Test_trials:
     # ------Prepare to start Routine "code_test"-------
     continueRoutine = True
     # update component parameters for each repeat
+    continueRoutine = True
+    #open port
+    while continueRoutine:
+        try:
+            ser = serial.Serial(**settings)
+            print("The port has been opened.")
+            
+        except (FileNotFoundError, serial.SerialException): 
+            print("Test session error. Double check the port!")
+            askedInput = str(input("Want to start over? Type Y or N:\n"))
+            if askedInput == "Y" or askedInput == "y":
+                continue
+            elif askedInput == "N" or askedInput == "n":
+                print("Finishing experiment...")
+                core.quit()
+            else:
+                print("Don't get your input. Try Y or N next time.\nTrying to open the port now...")
+    
     test_display_order=['t','s','c','z']
     
     #shuffle order of symbols to display
