@@ -1,8 +1,14 @@
+#Codemap
+#port settings -- 106
+#odor list -- 119
+
+
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2020.2.4),
-    on Sun Oct 18 23:15:32 2020
+    on Октябрь 20, 2020, at 15:35
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -10,6 +16,8 @@ If you publish work using this script the most relevant publication is:
         https://doi.org/10.3758/s13428-018-01193-y
 
 """
+
+#comment1:
 
 from __future__ import absolute_import, division
 
@@ -26,12 +34,14 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 
+
 from psychopy.hardware import keyboard
 
 #image_for_study="stimulus/bsbtbzrc.jpeg"
 study_order=[0,1,2,3]
 keys=['up','right','down','left']
 
+#comment2
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +49,7 @@ os.chdir(_thisDir)
 
 # Store info about the experiment session
 psychopyVersion = '2020.2.4'
-expName = 'smell_experiment_v.12'  # from the Builder filename that created this script
+expName = 'smell_experiment_v13'  # from the Builder filename that created this script
 expInfo = {'participant': '', 'session': '001'}
 dlg = gui.DlgFromDict(dictionary=expInfo, sort_keys=False, title=expName)
 if dlg.OK == False:
@@ -54,7 +64,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expNa
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='/Users/gric-gosha/Desktop/PsychoPy_env/smell_experiment_v.12.py',
+    originPath='C:\\Users\\senso\\Olfactory_BCI (Ninenko)\\smell_experiment_v13.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -67,7 +77,8 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 # Start Code - component code to be run before the window creation
 
 # Setup the Window
-win = visual.Window(fullscr=False, screen=0, 
+win = visual.Window(
+    size=(612, 384), fullscr=False, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -84,13 +95,18 @@ defaultKeyboard = keyboard.Keyboard()
 
 # Initialize components for Routine "code_initial"
 code_initialClock = core.Clock()
+"""
+"""
+#comment2end
+
 import random
 import serial
 
 from time import sleep
 
+
 #port settings
-settings = {"port": "COM3",
+settings = {"port": "COM6",
                   "baudrate": 115200,
                   "timeout": 1}
 
@@ -100,8 +116,8 @@ random.seed()
 #initialize list for smells
 smells=[1,2,3,4]
 
-#initialize odor names
-odor_keys_list = ['3', '5', '7', 'Null']
+#initialize odor list
+odor_keys_list = ['5', '6', '7', '8']
 
 #create odor counter
 odor_dict = {key: 0 for key in odor_keys_list}
@@ -128,7 +144,7 @@ trial_number=0
 
 #set limiter for each stimulus
 limit_study = 2
-limit_test = 2
+limit_test = 1
 
 
 
@@ -136,32 +152,46 @@ def eject(smell_correct):
     
     """Eject the stimulus given selected odor. See params in serial.Serial() documentation."""
     
-    if "Null" != odor_keys_list[smell_correct]:
-        msg = "w" + odor_keys_list[smell_correct] + ";" + " 1\n" 
-        ser.write(msg.encode())
-        print("The following command has been sent: \n" +  ">" + msg)
-    else:
-        #just go on if the stimulus is empty
-        #Maybe it's better to include this part in the statement above
-        #as the user will hear the "pss" sound
-        pass
-
+    msg = "w" + odor_keys_list[smell_correct] + ";" + " 1\n" 
+    ser.write(msg.encode())
+    print("The following command has been sent: \n" +  ">" + msg)
+    print("The answer is: ")
+    print(ser.readline().decode("ascii"))
 
 def close_current_capsule(smell_correct):
     
     """Stop the last stimulus. See params in serial.Serial() documentation."""
     
-    if "Null" != odor_keys_list[smell_correct]:
-        msg = "w" + odor_keys_list[smell_correct] + ";" + " 0\n" 
-        ser.write(msg.encode())
-        print("The following command has been sent: \n" +  ">" + msg)
-    else:
-        #just go on if the stimulus is empty
-        #Maybe it's better to include this part in the statement above
-        #as the user will hear the "pss" sound
-        pass
+    msg = "w" + odor_keys_list[smell_correct] + ";" + " 0\n" 
+    ser.write(msg.encode())
+    print("The following command has been sent: \n" +  ">" + msg)
+    print("The answer is: ")
+    print(ser.readline().decode("ascii"))
 
 print("Initialized successfully.")
+print("limit_study = ", limit_study)
+print("limit_test = ", limit_test)
+
+#open port
+continueRoutine = True
+
+while continueRoutine:
+    try:
+        ser = serial.Serial(**settings)
+        print("The port has been opened.")
+        break
+            
+    except (FileNotFoundError, serial.SerialException): 
+        print("Test session error. Double check the port!")
+        askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
+        if askedInput == "y":
+            continue
+        elif askedInput == "n":
+            print("Finishing experiment...")
+            core.quit()
+        else:
+            print("Don't get your input. Try Y or N next time.\nTrying to open the port now...")
+
 
 
 # Initialize components for Routine "Welcome_screen"
@@ -249,6 +279,9 @@ image_study = visual.ImageStim(
     texRes=512, interpolate=True, depth=-1.0)
 key_resp_study_trial = keyboard.Keyboard()
 
+# Initialize components for Routine "codeStudy_Finished"
+codeStudy_FinishedClock = core.Clock()
+
 # Initialize components for Routine "blank_500"
 blank_500Clock = core.Clock()
 polygon_blank_500 = visual.Rect(
@@ -258,9 +291,6 @@ polygon_blank_500 = visual.Rect(
     lineWidth=1, lineColor='white', lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-
-# Initialize components for Routine "codeStudy_Finished"
-codeStudy_FinishedClock = core.Clock()
 
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
@@ -347,6 +377,9 @@ image_test = visual.ImageStim(
     texRes=512, interpolate=True, depth=-1.0)
 key_resp_test_trial = keyboard.Keyboard()
 
+# Initialize components for Routine "codeTest_Finished"
+codeTest_FinishedClock = core.Clock()
+
 # Initialize components for Routine "blank_500"
 blank_500Clock = core.Clock()
 polygon_blank_500 = visual.Rect(
@@ -356,9 +389,6 @@ polygon_blank_500 = visual.Rect(
     lineWidth=1, lineColor='white', lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-
-# Initialize components for Routine "codeTest_Finished"
-codeTest_FinishedClock = core.Clock()
 
 # Initialize components for Routine "end_screen"
 end_screenClock = core.Clock()
@@ -736,25 +766,7 @@ for thisStudy_trial in Study_trials:
     Study_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
     
     # ------Prepare to start Routine "code_study"-------
-    continueRoutine = True
-    # update component parameters for each repeat
-    #open port
-    while continueRoutine:
-        try:
-            ser = serial.Serial(**settings)
-            print("The port has been opened.")
-            
-        except (FileNotFoundError, serial.SerialException): 
-            print("Study session error. Double check the port!")
-            askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
-            
-            if askedInput == "y":
-                continue
-            elif askedInput == "n":
-                print("Finishing experiment...")
-                core.quit()
-            else:
-                print("Didn't get your input. Try Y or N next time.\nTrying to open the port now...")
+
     
     
     study_display_order=['t','s','c','z']
@@ -771,14 +783,17 @@ for thisStudy_trial in Study_trials:
     
     #update number of stimuli presented
     while True:
+        print ('random smell try#', smell_correct)
         if odor_dict[odor_keys_list[smell_correct]] < limit_study:
             odor_dict[odor_keys_list[smell_correct]] += 1
             break
-            
+        elif sum(odor_dict.values()) == limit_study*4:
+            odor_dict = {key: 0 for key in odor_keys_list}
+            Study_trials.finished = True    
         else:
             smell_correct = random.randrange(4)
             continue
-    
+    print ('random smell#', smell_correct)
     #open port and eject stimulus
     eject(smell_correct)
     
@@ -858,8 +873,6 @@ for thisStudy_trial in Study_trials:
     for thisComponent in code_studyComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    #shut down current working capsule (stops stimulus)
-    close_current_capsule(smell_correct)
     # the Routine "code_study" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1065,6 +1078,66 @@ for thisStudy_trial in Study_trials:
     # the Routine "study_trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
+    # ------Prepare to start Routine "codeStudy_Finished"-------
+    continueRoutine = True
+    # update component parameters for each repeat
+    #shut down current working capsule (stops stimulus)
+    close_current_capsule(smell_correct)
+    
+  
+    
+     #checks the counter to finish Study session
+    if sum(odor_dict.values()) == limit_study*4:
+            odor_dict = {key: 0 for key in odor_keys_list}
+            Study_trials.finished = True
+    # keep track of which components have finished
+    codeStudy_FinishedComponents = []
+    for thisComponent in codeStudy_FinishedComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    codeStudy_FinishedClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "codeStudy_Finished"-------
+    while continueRoutine:
+        # get current time
+        t = codeStudy_FinishedClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=codeStudy_FinishedClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in codeStudy_FinishedComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # -------Ending Routine "codeStudy_Finished"-------
+    for thisComponent in codeStudy_FinishedComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # the Routine "codeStudy_Finished" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # ------Prepare to start Routine "blank_500"-------
     continueRoutine = True
     routineTimer.add(0.500000)
@@ -1133,61 +1206,6 @@ for thisStudy_trial in Study_trials:
             thisComponent.setAutoDraw(False)
     Study_trials.addData('polygon_blank_500.started', polygon_blank_500.tStartRefresh)
     Study_trials.addData('polygon_blank_500.stopped', polygon_blank_500.tStopRefresh)
-    
-    # ------Prepare to start Routine "codeStudy_Finished"-------
-    continueRoutine = True
-    # update component parameters for each repeat
-    if sum(odor_dict.values()) == limit_study*4:
-            odor_dict = {key: 0 for key in odor_keys_list}
-            Study_trials.finished = True
-            ser.close()
-    # keep track of which components have finished
-    codeStudy_FinishedComponents = []
-    for thisComponent in codeStudy_FinishedComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    codeStudy_FinishedClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-    
-    # -------Run Routine "codeStudy_Finished"-------
-    while continueRoutine:
-        # get current time
-        t = codeStudy_FinishedClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=codeStudy_FinishedClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in codeStudy_FinishedComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-    
-    # -------Ending Routine "codeStudy_Finished"-------
-    for thisComponent in codeStudy_FinishedComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    # the Routine "codeStudy_Finished" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset()
     thisExp.nextEntry()
     
 # completed 1000 repeats of 'Study_trials'
@@ -1503,25 +1521,6 @@ for thisTest_trial in Test_trials:
     Test_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
     
     # ------Prepare to start Routine "code_test"-------
-    continueRoutine = True
-    # update component parameters for each repeat
-    continueRoutine = True
-    #open port
-    while continueRoutine:
-        try:
-            ser = serial.Serial(**settings)
-            print("The port has been opened.")
-            
-        except (FileNotFoundError, serial.SerialException): 
-            print("Test session error. Double check the port!")
-            askedInput = str(input("Want to start over? Type Y or N:\n"))
-            if askedInput == "Y" or askedInput == "y":
-                continue
-            elif askedInput == "N" or askedInput == "n":
-                print("Finishing experiment...")
-                core.quit()
-            else:
-                print("Don't get your input. Try Y or N next time.\nTrying to open the port now...")
     
     test_display_order=['t','s','c','z']
     
@@ -1531,15 +1530,18 @@ for thisTest_trial in Test_trials:
     
     #set number for the smell
     smell_correct = random.randrange(4)
-    
     while True:
+        print ('random smell try#', smell_correct)
         if odor_dict[odor_keys_list[smell_correct]] < limit_test:
             odor_dict[odor_keys_list[smell_correct]] += 1
             break
-            
+        elif sum(odor_dict.values()) == limit_test*4:
+            odor_dict = {key: 0 for key in odor_keys_list}
+            Study_trials.finished = True    
         else:
             smell_correct = random.randrange(4)
             continue
+    print ('random smell#', smell_correct)
     
     #open port and eject stimulus
     eject(smell_correct)
@@ -1612,8 +1614,6 @@ for thisTest_trial in Test_trials:
     for thisComponent in code_testComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
-    #shut down current working capsule (stops stimulus)
-    close_current_capsule(smell_correct)
     # the Routine "code_test" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1812,6 +1812,65 @@ for thisTest_trial in Test_trials:
     # the Routine "test_trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
+    # ------Prepare to start Routine "codeTest_Finished"-------
+    continueRoutine = True
+    # update component parameters for each repeat
+    #shut down current working capsule (stops stimulus)
+    close_current_capsule(smell_correct)
+    
+       
+    #checks the counter to finish Test session
+    if sum(odor_dict.values()) == limit_test*4:
+            odor_dict = {key: 0 for key in odor_keys_list}
+            Test_trials.finished = True
+    # keep track of which components have finished
+    codeTest_FinishedComponents = []
+    for thisComponent in codeTest_FinishedComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    codeTest_FinishedClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "codeTest_Finished"-------
+    while continueRoutine:
+        # get current time
+        t = codeTest_FinishedClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=codeTest_FinishedClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in codeTest_FinishedComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # -------Ending Routine "codeTest_Finished"-------
+    for thisComponent in codeTest_FinishedComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    # the Routine "codeTest_Finished" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset()
+    
     # ------Prepare to start Routine "blank_500"-------
     continueRoutine = True
     routineTimer.add(0.500000)
@@ -1880,64 +1939,11 @@ for thisTest_trial in Test_trials:
             thisComponent.setAutoDraw(False)
     Test_trials.addData('polygon_blank_500.started', polygon_blank_500.tStartRefresh)
     Test_trials.addData('polygon_blank_500.stopped', polygon_blank_500.tStopRefresh)
-    
-    # ------Prepare to start Routine "codeTest_Finished"-------
-    continueRoutine = True
-    # update component parameters for each repeat
-    if sum(odor_dict.values()) == limit_test*4:
-            Test_trials.finished = True
-            ser.close()
-    # keep track of which components have finished
-    codeTest_FinishedComponents = []
-    for thisComponent in codeTest_FinishedComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    codeTest_FinishedClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-    
-    # -------Run Routine "codeTest_Finished"-------
-    while continueRoutine:
-        # get current time
-        t = codeTest_FinishedClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=codeTest_FinishedClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in codeTest_FinishedComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-    
-    # -------Ending Routine "codeTest_Finished"-------
-    for thisComponent in codeTest_FinishedComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    # the Routine "codeTest_Finished" was not non-slip safe, so reset the non-slip timer
-    routineTimer.reset()
     thisExp.nextEntry()
     
-# completed 1000 repeats of 'Test_trials'
-
+#close the port
+ser.close()
+print("Port has been successfully closed")
 
 # ------Prepare to start Routine "end_screen"-------
 continueRoutine = True
@@ -2060,3 +2066,4 @@ logging.flush()
 thisExp.abort()  # or data files will save again on exit
 win.close()
 core.quit()
+
