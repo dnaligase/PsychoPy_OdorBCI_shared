@@ -1,81 +1,61 @@
-#Codemap
+	#Codemap
 #port settings -- 106
 #odor list -- 119
-
-
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2020.2.4),
-    on Октябрь 20, 2020, at 15:35
+    on Oct 20, 2020, at 15:35
 If you publish work using this script the most relevant publication is:
-
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
         PsychoPy2: Experiments in behavior made easy Behav Res 51: 195. 
         https://doi.org/10.3758/s13428-018-01193-y
-
 """
-
 #comment1:
-
 from __future__ import absolute_import, division
-
 from psychopy import locale_setup
 from psychopy import prefs
 from psychopy import sound, gui, visual, core, data, event, logging, clock
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
                                 STOPPED, FINISHED, PRESSED, RELEASED, FOREVER)
-
 import numpy as np  # whole numpy lib is available, prepend 'np.'
 from numpy import (sin, cos, tan, log, log10, pi, average,
                    sqrt, std, deg2rad, rad2deg, linspace, asarray)
 from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
-
-
 from psychopy.hardware import keyboard
-
 #image_for_study="stimulus/bsbtbzrc.jpeg"
 study_order=[0,1,2,3]
 keys=['up','right','down','left']
-
 #comment2
-
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
-
 # Store info about the experiment session
 psychopyVersion = '2020.2.4'
-expName = 'smell_experiment_v13'  # from the Builder filename that created this script
-expInfo = {'participant': '', 'session': '001'}
+expName = 'smell_experiment_main'  # from the Builder filename that created this script
+expInfo = {'participant': '', 'session': '01'}
 dlg = gui.DlgFromDict(dictionary=expInfo, sort_keys=False, title=expName)
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
-
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])
-
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='C:\\Users\\senso\\Olfactory_BCI (Ninenko)\\smell_experiment_v13.py',
+    originPath='/Users/gric-gosha/Desktop/PsychoPy_env',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
 logFile = logging.LogFile(filename+'.log', level=logging.EXP)
 logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a file
-
 endExpNow = False  # flag for 'escape' or other condition => quit the exp
 frameTolerance = 0.001  # how close to onset before 'same' frame
-
 # Start Code - component code to be run before the window creation
-
 # Setup the Window
 win = visual.Window(
     size=(612, 384), fullscr=False, screen=0, 
@@ -89,64 +69,53 @@ if expInfo['frameRate'] != None:
     frameDur = 1.0 / round(expInfo['frameRate'])
 else:
     frameDur = 1.0 / 60.0  # could not measure, so guess
-
 # create a default keyboard (e.g. to check for escape)
 defaultKeyboard = keyboard.Keyboard()
-
 # Initialize components for Routine "code_initial"
 code_initialClock = core.Clock()
 """
 """
 #comment2end
-
 import random
 import serial
-
 from time import sleep
-
-
 #port settings
 settings = {"port": "COM6",
                   "baudrate": 115200,
                   "timeout": 1}
-
 #randomize random
 random.seed()
-
 #initialize list for smells
 smells=[1,2,3,4]
-
 #initialize odor list
-odor_keys_list = ['5', '6', '7', '8']
-
+odor_keys_list = ['9', '6', '7', '8']
 #create odor counter
 odor_dict = {key: 0 for key in odor_keys_list}
-
 #initialize list for symbols
 symbols_set=['t','s','c','z']
-
 #shuffle order of symbols
 random.shuffle(symbols_set)
-
 #initialise dict for symbols
 symbols={}
 for i in range(4):
     symbols[i]=symbols_set[i]
-
 #set study_number
 study_number=0
-
 #set test_number
 test_number=0
-
 #set trial_number
 trial_number=0
-
 #set limiter for each stimulus
-limit_study = 2
+limit_study = 1
 limit_test = 1
 
-
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
 
 def eject(smell_correct):
     
@@ -157,7 +126,6 @@ def eject(smell_correct):
     print("The following command has been sent: \n" +  ">" + msg)
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
-
 def close_current_capsule(smell_correct):
     
     """Stop the last stimulus. See params in serial.Serial() documentation."""
@@ -167,22 +135,19 @@ def close_current_capsule(smell_correct):
     print("The following command has been sent: \n" +  ">" + msg)
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
-
-print("Initialized successfully.")
+print(bcolors.OKGREEN + "Initialized successfully." + bcolors.ENDC)
 print("limit_study = ", limit_study)
 print("limit_test = ", limit_test)
-
 #open port
 continueRoutine = True
-
 while continueRoutine:
     try:
         ser = serial.Serial(**settings)
-        print("The port has been opened.")
+        print(bicolor.OKGREEN + "The port has been opened. May the experiment begin!" + bcolors.ENDC)
         break
             
     except (FileNotFoundError, serial.SerialException): 
-        print("Test session error. Double check the port!")
+        print(bcolors.WARNING + "Test session error. Double check the port!" + bcolors.ENDC)
         askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
         if askedInput == "y":
             continue
@@ -190,21 +155,18 @@ while continueRoutine:
             print("Finishing experiment...")
             core.quit()
         else:
-            print("Don't get your input. Try Y or N next time.\nTrying to open the port now...")
-
-
+            print(bcolors.FAIL + "Didn't get your input. Try Y or N next time." + bcolors.ENDC + "\n" + bcolors.OKBLUE + "Trying to open the port now..." + bcolors.ENDC)
 
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
 text_welcome_screen = visual.TextStim(win=win, name='text_welcome_screen',
-    text='Ознакомтесь с инструкцией.\n\nДля начала эксперимента нажмите пробел или джойстик.',
+    text='Ознакомьтесь с инструкцией.\n\nДля начала эксперимента нажмите пробел или джойстик.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=0.0);
 key_resp = keyboard.Keyboard()
-
 # Initialize components for Routine "Start_trial_screen"
 Start_trial_screenClock = core.Clock()
 background_start_trial_screen = visual.Rect(
@@ -222,7 +184,6 @@ text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_tr
     languageStyle='LTR',
     depth=-1.0);
 key_resp_for_start_trial = keyboard.Keyboard()
-
 # Initialize components for Routine "Pause_screen"
 Pause_screenClock = core.Clock()
 backgound_for_pause_creen = visual.Rect(
@@ -239,10 +200,8 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
     color='red', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
-
 # Initialize components for Routine "code_study"
 code_studyClock = core.Clock()
-
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
 background_for_smell_screen = visual.Rect(
@@ -259,7 +218,6 @@ fixation_point_during_smell = visual.TextStim(win=win, name='fixation_point_duri
     color='red', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
-
 # Initialize components for Routine "study_trial"
 study_trialClock = core.Clock()
 polygon_study_background = visual.Rect(
@@ -278,10 +236,8 @@ image_study = visual.ImageStim(
     flipHoriz=False, flipVert=False,
     texRes=512, interpolate=True, depth=-1.0)
 key_resp_study_trial = keyboard.Keyboard()
-
 # Initialize components for Routine "codeStudy_Finished"
 codeStudy_FinishedClock = core.Clock()
-
 # Initialize components for Routine "blank_500"
 blank_500Clock = core.Clock()
 polygon_blank_500 = visual.Rect(
@@ -291,7 +247,6 @@ polygon_blank_500 = visual.Rect(
     lineWidth=1, lineColor='white', lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
 text_second_start = visual.TextStim(win=win, name='text_second_start',
@@ -302,7 +257,6 @@ text_second_start = visual.TextStim(win=win, name='text_second_start',
     languageStyle='LTR',
     depth=0.0);
 key_resp_second_start = keyboard.Keyboard()
-
 # Initialize components for Routine "Start_trial_screen"
 Start_trial_screenClock = core.Clock()
 background_start_trial_screen = visual.Rect(
@@ -320,7 +274,6 @@ text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_tr
     languageStyle='LTR',
     depth=-1.0);
 key_resp_for_start_trial = keyboard.Keyboard()
-
 # Initialize components for Routine "Pause_screen"
 Pause_screenClock = core.Clock()
 backgound_for_pause_creen = visual.Rect(
@@ -337,10 +290,8 @@ cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
     color='red', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
-
 # Initialize components for Routine "code_test"
 code_testClock = core.Clock()
-
 # Initialize components for Routine "Smell_creen_with_code"
 Smell_creen_with_codeClock = core.Clock()
 background_for_smell_screen = visual.Rect(
@@ -357,7 +308,6 @@ fixation_point_during_smell = visual.TextStim(win=win, name='fixation_point_duri
     color='red', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
-
 # Initialize components for Routine "test_trial"
 test_trialClock = core.Clock()
 background_test_trail = visual.Rect(
@@ -376,10 +326,8 @@ image_test = visual.ImageStim(
     flipHoriz=False, flipVert=False,
     texRes=512, interpolate=True, depth=-1.0)
 key_resp_test_trial = keyboard.Keyboard()
-
 # Initialize components for Routine "codeTest_Finished"
 codeTest_FinishedClock = core.Clock()
-
 # Initialize components for Routine "blank_500"
 blank_500Clock = core.Clock()
 polygon_blank_500 = visual.Rect(
@@ -389,7 +337,6 @@ polygon_blank_500 = visual.Rect(
     lineWidth=1, lineColor='white', lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-
 # Initialize components for Routine "end_screen"
 end_screenClock = core.Clock()
 text_end_screen = visual.TextStim(win=win, name='text_end_screen',
@@ -400,11 +347,9 @@ text_end_screen = visual.TextStim(win=win, name='text_end_screen',
     languageStyle='LTR',
     depth=0.0);
 key_resp_2 = keyboard.Keyboard()
-
 # Create some handy timers
 globalClock = core.Clock()  # to track the time since experiment started
 routineTimer = core.CountdownTimer()  # to track time remaining of each (non-slip) routine 
-
 # ------Prepare to start Routine "code_initial"-------
 continueRoutine = True
 # update component parameters for each repeat
@@ -422,7 +367,6 @@ t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 code_initialClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
-
 # -------Run Routine "code_initial"-------
 while continueRoutine:
     # get current time
@@ -448,14 +392,12 @@ while continueRoutine:
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
-
 # -------Ending Routine "code_initial"-------
 for thisComponent in code_initialComponents:
     if hasattr(thisComponent, "setAutoDraw"):
         thisComponent.setAutoDraw(False)
 # the Routine "code_initial" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
-
 # ------Prepare to start Routine "Welcome_screen"-------
 continueRoutine = True
 # update component parameters for each repeat
@@ -476,7 +418,6 @@ t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 Welcome_screenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
-
 # -------Run Routine "Welcome_screen"-------
 while continueRoutine:
     # get current time
@@ -533,7 +474,6 @@ while continueRoutine:
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
-
 # -------Ending Routine "Welcome_screen"-------
 for thisComponent in Welcome_screenComponents:
     if hasattr(thisComponent, "setAutoDraw"):
@@ -551,7 +491,6 @@ thisExp.addData('key_resp.stopped', key_resp.tStopRefresh)
 thisExp.nextEntry()
 # the Routine "Welcome_screen" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
-
 # set up handler to look after randomisation of conditions etc
 Study_trials = data.TrialHandler(nReps=1000, method='random', 
     extraInfo=expInfo, originPath=-1,
@@ -563,7 +502,6 @@ thisStudy_trial = Study_trials.trialList[0]  # so we can initialise stimuli with
 if thisStudy_trial != None:
     for paramName in thisStudy_trial:
         exec('{} = thisStudy_trial[paramName]'.format(paramName))
-
 for thisStudy_trial in Study_trials:
     currentLoop = Study_trials
     # abbreviate parameter names if possible (e.g. rgb = thisStudy_trial.rgb)
@@ -766,7 +704,6 @@ for thisStudy_trial in Study_trials:
     Study_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
     
     # ------Prepare to start Routine "code_study"-------
-
     
     
     study_display_order=['t','s','c','z']
@@ -1209,8 +1146,6 @@ for thisStudy_trial in Study_trials:
     thisExp.nextEntry()
     
 # completed 1000 repeats of 'Study_trials'
-
-
 # ------Prepare to start Routine "second_start__screen"-------
 continueRoutine = True
 # update component parameters for each repeat
@@ -1231,7 +1166,6 @@ t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 second_start__screenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
-
 # -------Run Routine "second_start__screen"-------
 while continueRoutine:
     # get current time
@@ -1288,7 +1222,6 @@ while continueRoutine:
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
-
 # -------Ending Routine "second_start__screen"-------
 for thisComponent in second_start__screenComponents:
     if hasattr(thisComponent, "setAutoDraw"):
@@ -1306,7 +1239,6 @@ thisExp.addData('key_resp_second_start.stopped', key_resp_second_start.tStopRefr
 thisExp.nextEntry()
 # the Routine "second_start__screen" was not non-slip safe, so reset the non-slip timer
 routineTimer.reset()
-
 # set up handler to look after randomisation of conditions etc
 Test_trials = data.TrialHandler(nReps=1000, method='random', 
     extraInfo=expInfo, originPath=-1,
@@ -1318,7 +1250,6 @@ thisTest_trial = Test_trials.trialList[0]  # so we can initialise stimuli with s
 if thisTest_trial != None:
     for paramName in thisTest_trial:
         exec('{} = thisTest_trial[paramName]'.format(paramName))
-
 for thisTest_trial in Test_trials:
     currentLoop = Test_trials
     # abbreviate parameter names if possible (e.g. rgb = thisTest_trial.rgb)
@@ -1434,7 +1365,7 @@ for thisTest_trial in Test_trials:
     
     # ------Prepare to start Routine "Pause_screen"-------
     continueRoutine = True
-    routineTimer.add(2.000000)
+    routineTimer.add(4.000000)
     # update component parameters for each repeat
     # keep track of which components have finished
     Pause_screenComponents = [backgound_for_pause_creen, cross_for_pause_screen]
@@ -1552,6 +1483,13 @@ for thisTest_trial in Test_trials:
     #reset name of file to siplay
     image_for_test="stimuli/"
     
+    #Determine a correct key pressed in test session
+    for i in range(4):
+        if correct_symbol == test_display_order[i]:
+            correct_key_test=keys[i]
+            break
+        else:
+            continue
     #create name of file to display
     for i in range(4):
         image_for_test +='b'
@@ -1567,6 +1505,7 @@ for thisTest_trial in Test_trials:
     thisExp.addData('correct_smell', smell_correct)
     thisExp.addData('correct_symbol', correct_symbol)
     thisExp.addData('image_for_study', image_for_study)
+    thisExp.addData('correct_key_test', correct_key_test)
     thisExp.addData('test_number', test_number)
     thisExp.addData('trial_number', trial_number)
     # keep track of which components have finished
@@ -1805,8 +1744,12 @@ for thisTest_trial in Test_trials:
     if key_resp_test_trial.keys in ['', [], None]:  # No response was made
         key_resp_test_trial.keys = None
     Test_trials.addData('key_resp_test_trial.keys',key_resp_test_trial.keys)
+    if key_resp_test_trial.keys == correct_key_test:
+        print(bcolors.OKBLUE + f'TEST_TRIAL: Correct key "{key_resp_test_trial.keys}" has been pressed.' + bcolors.ENDC + f'\nCorrect symbol: {correct_symbol}')
+    else:
+        print(bcolors.FAIL + f'TEST_TRIAL: Wrong key "{key_resp_test_trial.keys}" has been pressed.' + bcolors.ENDC + f'\nCorrect symbol: {correct_symbol}')
     if key_resp_test_trial.keys != None:  # we had a response
-        Test_trials.addData('key_resp_test_trial.rt', key_resp_test_trial.rt)
+        Test_trials.addData('latency', key_resp_test_trial.rt)
     Test_trials.addData('key_resp_test_trial.started', key_resp_test_trial.tStartRefresh)
     Test_trials.addData('key_resp_test_trial.stopped', key_resp_test_trial.tStopRefresh)
     # the Routine "test_trial" was not non-slip safe, so reset the non-slip timer
@@ -1944,7 +1887,6 @@ for thisTest_trial in Test_trials:
 #close the port
 ser.close()
 print("Port has been successfully closed")
-
 # ------Prepare to start Routine "end_screen"-------
 continueRoutine = True
 routineTimer.add(2.000000)
@@ -1966,7 +1908,6 @@ t = 0
 _timeToFirstFrame = win.getFutureFlipTime(clock="now")
 end_screenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
 frameN = -1
-
 # -------Run Routine "end_screen"-------
 while continueRoutine and routineTimer.getTime() > 0:
     # get current time
@@ -2037,7 +1978,6 @@ while continueRoutine and routineTimer.getTime() > 0:
     # refresh the screen
     if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
         win.flip()
-
 # -------Ending Routine "end_screen"-------
 for thisComponent in end_screenComponents:
     if hasattr(thisComponent, "setAutoDraw"):
@@ -2053,11 +1993,9 @@ if key_resp_2.keys != None:  # we had a response
 thisExp.addData('key_resp_2.started', key_resp_2.tStartRefresh)
 thisExp.addData('key_resp_2.stopped', key_resp_2.tStopRefresh)
 thisExp.nextEntry()
-
 # Flip one final time so any remaining win.callOnFlip() 
 # and win.timeOnFlip() tasks get executed before quitting
 win.flip()
-
 # these shouldn't be strictly necessary (should auto-save)
 thisExp.saveAsWideText(filename+'.csv', delim='auto')
 thisExp.saveAsPickle(filename)
@@ -2066,4 +2004,3 @@ logging.flush()
 thisExp.abort()  # or data files will save again on exit
 win.close()
 core.quit()
-
