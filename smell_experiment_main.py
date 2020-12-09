@@ -1,4 +1,4 @@
-	#Codemap
+#Codemap
 #port settings -- 106
 #odor list -- 119
 #!/usr/bin/env python
@@ -136,8 +136,8 @@ def close_current_capsule(smell_correct):
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
 print(bcolors.OKGREEN + "Initialized successfully." + bcolors.ENDC)
-print("limit_study = ", limit_study)
-print("limit_test = ", limit_test)
+print("limit_study =", limit_study)
+print("limit_test =", limit_test)
 #open port
 continueRoutine = True
 while continueRoutine:
@@ -147,7 +147,7 @@ while continueRoutine:
         break
             
     except (FileNotFoundError, serial.SerialException): 
-        print(bcolors.WARNING + "Test session error. Double check the port!" + bcolors.ENDC)
+        print(bcolors.WARNING + "Arduino connection error. Double check the COM-port!" + bcolors.ENDC)
         askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
         if askedInput == "y":
             continue
