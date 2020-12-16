@@ -25,9 +25,13 @@ from numpy.random import random, randint, normal, shuffle
 import os  # handy system and path functions
 import sys  # to get file system encoding
 from psychopy.hardware import keyboard
+from psychopy import gui
+from colorama import init, Fore, Style, Back
+init(autoreset=True)
 #image_for_study="stimulus/bsbtbzrc.jpeg"
 study_order=[0,1,2,3]
 keys=['up','right','down','left']
+pressedCorrect_counter = 0
 #comment2
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -35,15 +39,32 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2020.2.4'
 expName = 'smell_experiment_main'  # from the Builder filename that created this script
-expInfo = {'participant': '', 'session': '01'}
-dlg = gui.DlgFromDict(dictionary=expInfo, sort_keys=False, title=expName)
-if dlg.OK == False:
+# expInfo = {'Name': '', 'age': '', 'sex': '', 'isCycle': 'None', 'session': '01'}
+keys_experiment = ['name', 'age', 'sex', 'isMenPhase', 'session']
+
+myDlg = gui.Dlg(title="CUBE: The Smell Experiment")
+myDlg.addText('Subject info')
+myDlg.addField('Name:')
+myDlg.addField('Age:', 21)
+myDlg.addField('Sex:', choices=['Female', 'Male'])
+
+myDlg.addText('Additional Info')
+myDlg.addField('isMenstrual:', initial=False, tip="Check the box for subjects in their menstrual phase.")
+myDlg.addField('Session:', 1)
+
+ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
+# dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=True, title=expName)
+if myDlg.OK == False:
     core.quit()  # user pressed cancel
+else:
+    print(ok_data)
+
+expInfo = {key:value for key, value in zip(keys_experiment, ok_data)}
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
-filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['participant'], expName, expInfo['date'])
+filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['name'], expName, expInfo['date'])
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
@@ -100,14 +121,16 @@ symbols={}
 for i in range(4):
     symbols[i]=symbols_set[i]
 #set study_number
-study_number=0
+study_number = 0
 #set test_number
-test_number=0
+test_number = 0
 #set trial_number
-trial_number=0
+trial_number = 0
 #set limiter for each stimulus
 limit_study = 1
 limit_test = 1
+fixation_point_duration = 5.000000
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -116,6 +139,7 @@ class bcolors:
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
+
 
 def eject(smell_correct):
     
@@ -126,6 +150,8 @@ def eject(smell_correct):
     print("The following command has been sent: \n" +  ">" + msg)
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
+    
+    
 def close_current_capsule(smell_correct):
     
     """Stop the last stimulus. See params in serial.Serial() documentation."""
@@ -135,19 +161,22 @@ def close_current_capsule(smell_correct):
     print("The following command has been sent: \n" +  ">" + msg)
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
-print(bcolors.OKGREEN + "Initialized successfully." + bcolors.ENDC)
+    
+    
+print(Fore.GREEN + "Initialized successfully.")
 print("limit_study =", limit_study)
 print("limit_test =", limit_test)
+print(Fore.YELLOW + "fixation_point_duration =", fixation_point_duration)
 #open port
 continueRoutine = True
 while continueRoutine:
     try:
         ser = serial.Serial(**settings)
-        print(bicolor.OKGREEN + "The port has been opened. May the experiment begin!" + bcolors.ENDC)
+        print(Fore.GREEN + "The port has been opened. May the experiment begin!")
         break
             
     except (FileNotFoundError, serial.SerialException): 
-        print(bcolors.WARNING + "Arduino connection error. Double check the COM-port!" + bcolors.ENDC)
+        print(Fore.YELLOW + "Arduino connection error. Double check the COM-port!")
         askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
         if askedInput == "y":
             continue
@@ -155,7 +184,7 @@ while continueRoutine:
             print("Finishing experiment...")
             core.quit()
         else:
-            print(bcolors.FAIL + "Didn't get your input. Try Y or N next time." + bcolors.ENDC + "\n" + bcolors.OKBLUE + "Trying to open the port now..." + bcolors.ENDC)
+            print(Fore.RED + "Didn't get your input. Try Y or N next time." + "\n" + Fore.MAGENTA + "Trying to open the port now...")
 
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
@@ -250,7 +279,7 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
 text_second_start = visual.TextStim(win=win, name='text_second_start',
-    text='Прослушайте интрукции для второй части эксперимента.\n\nНажмите пробел или джойстик.',
+    text='Прослушайте инструкции для второй части эксперимента.\n\nНажмите пробел или джойстик.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -815,7 +844,7 @@ for thisStudy_trial in Study_trials:
     
     # ------Prepare to start Routine "Smell_creen_with_code"-------
     continueRoutine = True
-    routineTimer.add(2.000000)
+    routineTimer.add(fixation_point_duration)
     # update component parameters for each repeat
     # keep track of which components have finished
     Smell_creen_with_codeComponents = [background_for_smell_screen, fixation_point_during_smell]
@@ -1365,7 +1394,7 @@ for thisTest_trial in Test_trials:
     
     # ------Prepare to start Routine "Pause_screen"-------
     continueRoutine = True
-    routineTimer.add(4.000000)
+    routineTimer.add(2.000000)
     # update component parameters for each repeat
     # keep track of which components have finished
     Pause_screenComponents = [backgound_for_pause_creen, cross_for_pause_screen]
@@ -1452,7 +1481,6 @@ for thisTest_trial in Test_trials:
     Test_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
     
     # ------Prepare to start Routine "code_test"-------
-    
     test_display_order=['t','s','c','z']
     
     #shuffle order of symbols to display
@@ -1558,7 +1586,7 @@ for thisTest_trial in Test_trials:
     
     # ------Prepare to start Routine "Smell_creen_with_code"-------
     continueRoutine = True
-    routineTimer.add(2.000000)
+    routineTimer.add(fixation_point_duration)
     # update component parameters for each repeat
     # keep track of which components have finished
     Smell_creen_with_codeComponents = [background_for_smell_screen, fixation_point_during_smell]
@@ -1645,6 +1673,7 @@ for thisTest_trial in Test_trials:
     Test_trials.addData('fixation_point_during_smell.stopped', fixation_point_during_smell.tStopRefresh)
     
     # ------Prepare to start Routine "test_trial"-------
+
     continueRoutine = True
     # update component parameters for each repeat
     image_test.setImage(image_for_test)
@@ -1745,11 +1774,12 @@ for thisTest_trial in Test_trials:
         key_resp_test_trial.keys = None
     Test_trials.addData('key_resp_test_trial.keys',key_resp_test_trial.keys)
     if key_resp_test_trial.keys == correct_key_test:
-        print(bcolors.OKBLUE + f'TEST_TRIAL: Correct key "{key_resp_test_trial.keys}" has been pressed.' + bcolors.ENDC + f'\nCorrect symbol: {correct_symbol}')
+        print(Fore.MAGENTA + f'TEST_TRIAL: Correct key "{key_resp_test_trial.keys}" has been pressed.' + f'\nCorrect symbol: {correct_symbol}')
+        pressedCorrect_counter += 1
     else:
-        print(bcolors.FAIL + f'TEST_TRIAL: Wrong key "{key_resp_test_trial.keys}" has been pressed.' + bcolors.ENDC + f'\nCorrect symbol: {correct_symbol}')
+        print(Fore.RED + f'TEST_TRIAL: Wrong key "{key_resp_test_trial.keys}" has been pressed.' + f'\nCorrect symbol: {correct_symbol}')
     if key_resp_test_trial.keys != None:  # we had a response
-        Test_trials.addData('latency', key_resp_test_trial.rt)
+        Test_trials.addData('latency', key_resp_test_trial.rt + fixation_point_duration)
     Test_trials.addData('key_resp_test_trial.started', key_resp_test_trial.tStartRefresh)
     Test_trials.addData('key_resp_test_trial.stopped', key_resp_test_trial.tStopRefresh)
     # the Routine "test_trial" was not non-slip safe, so reset the non-slip timer
@@ -1886,7 +1916,11 @@ for thisTest_trial in Test_trials:
     
 #close the port
 ser.close()
-print("Port has been successfully closed")
+print(Back.YELLOW + f"Experiment has been finished with the total score of: {pressedCorrect_counter / (limit_test * 4)}")
+
+if not ser.isOpen():
+    print(Fore.GREEN + "Port has been successfully closed")
+    
 # ------Prepare to start Routine "end_screen"-------
 continueRoutine = True
 routineTimer.add(2.000000)
