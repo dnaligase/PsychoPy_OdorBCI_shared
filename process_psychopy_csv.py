@@ -27,7 +27,7 @@ cols_to_extract = ["correct_smell", "correct_symbol", "image_for_study", "correc
 
 
 def process_psychopy_output(args):
-    output_dir = os.path.join(filedir, args.output_dir)
+    output_dir = os.path.join(filedir, args.output_dir) # path to a folder to save data to
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir) # create new folder in the same as input data directory
     
@@ -38,6 +38,7 @@ def process_psychopy_output(args):
         fnames = glob.glob(input_dir) # parse all the .csv files in data folder
     
     dfs = {}
+    # create dictionary of processed dataframes
     for i, name in enumerate(fnames):
         df = pd.read_csv(fnames[i])
         df.insert(df.columns.get_loc("latency") + 1, "latency_wo_fixation",
@@ -45,11 +46,12 @@ def process_psychopy_output(args):
         df = df.loc[:, cols_to_extract]
         dfs[name.split("/")[-1]] = df[df.correct_smell.notna()]
     
-
+    # save concatenated dataframes if specified
     if args.concatenate:
         result = pd.concat(dfs)
         result.to_csv(os.path.join(output_dir, "merged" +
                                    datetime.now().strftime("_%Y-%b-%d_%H%M") + ".csv"))
+    # else save each dataframe separately
     else:
         for fname, df in dfs.items():
             df.to_csv(os.path.join(output_dir, "processed" + fname))
