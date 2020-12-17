@@ -3,7 +3,7 @@ A general pipeline to build an experimental flow. This repo implies the adding/u
 
 
 ### Example usage
-To run process_psychopy_csv.py:
+To run process_psychopy_csv.py (Requires launch within the same directory as **data** folder is stored!):
 * Execute `python process_psychopy_csv.py --help` to get detailed description
 * For example, create cleaned and concatenated across individuals dataframes, using statement below. The new file will appear in *myNewFolder*:
     
