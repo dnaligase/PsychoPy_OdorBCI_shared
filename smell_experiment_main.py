@@ -189,7 +189,7 @@ while continueRoutine:
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
 text_welcome_screen = visual.TextStim(win=win, name='text_welcome_screen',
-    text='Ознакомьтесь с инструкцией.\n\nДля начала эксперимента нажмите пробел или джойстик.',
+    text='Прослушайте задание.\n\nДля начала эксперимента нажмите на джойстик.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -206,12 +206,20 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите пробел или джойстик\nдля подачи запаха',
+    text='Нажмите на джойстик\nдля подачи аромата',
     font='Arial',
     pos=(0, 0), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
+image_MARK = visual.ImageStim(
+    win=win,
+    name='image_MARK', 
+    image='gesture-press.png', mask=None,
+    ori=0, pos=(0.0, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=1,
+    flipHoriz=False, flipVert=False,
+    texRes=128, interpolate=True, depth=-3.0)
 key_resp_for_start_trial = keyboard.Keyboard()
 # Initialize components for Routine "Pause_screen"
 Pause_screenClock = core.Clock()
@@ -279,7 +287,7 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
 text_second_start = visual.TextStim(win=win, name='text_second_start',
-    text='Прослушайте инструкции для второй части эксперимента.\n\nНажмите пробел или джойстик.',
+    text='Прослушайте задание для второй части эксперимента.\n\nНажмите на джойстик.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -296,12 +304,20 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите пробел или джойстик\nдля подачи запаха',
+    text='Нажмите на джойстик\nдля подачи аромата',
     font='Arial',
     pos=(0, 0), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
+image_MARK = visual.ImageStim(
+    win=win,
+    name='image_MARK', 
+    image='gesture-press.png', mask=None,
+    ori=0, pos=(0.0, 0.15), size=(0.3, 0.3),
+    color=[1,1,1], colorSpace='rgb', opacity=1,
+    flipHoriz=False, flipVert=False,
+    texRes=128, interpolate=True, depth=-3.0)
 key_resp_for_start_trial = keyboard.Keyboard()
 # Initialize components for Routine "Pause_screen"
 Pause_screenClock = core.Clock()
@@ -369,7 +385,7 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "end_screen"
 end_screenClock = core.Clock()
 text_end_screen = visual.TextStim(win=win, name='text_end_screen',
-    text='Спасибо!\n\nЭксперимент закончен.',
+    text='Спасибо!\n\nЭксперимент завершен.',
     font='Arial',
     pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -545,7 +561,7 @@ for thisStudy_trial in Study_trials:
     key_resp_for_start_trial.rt = []
     _key_resp_for_start_trial_allKeys = []
     # keep track of which components have finished
-    Start_trial_screenComponents = [background_start_trial_screen, text__for_start_trial_screen, key_resp_for_start_trial]
+    Start_trial_screenComponents = [background_start_trial_screen, text__for_start_trial_screen, key_resp_for_start_trial, image_MARK]
     for thisComponent in Start_trial_screenComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -607,6 +623,15 @@ for thisStudy_trial in Study_trials:
                 key_resp_for_start_trial.rt = _key_resp_for_start_trial_allKeys[-1].rt
                 # a response ends the routine
                 continueRoutine = False
+        
+        # *image_MARK* updates
+        if image_MARK.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            image_MARK.frameNStart = frameN  # exact frame index
+            image_MARK.tStart = t  # local t and not account for scr refresh
+            image_MARK.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(image_MARK, 'tStartRefresh')  # time at next scr refresh
+            image_MARK.setAutoDraw(True)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
@@ -1293,7 +1318,7 @@ for thisTest_trial in Test_trials:
     key_resp_for_start_trial.rt = []
     _key_resp_for_start_trial_allKeys = []
     # keep track of which components have finished
-    Start_trial_screenComponents = [background_start_trial_screen, text__for_start_trial_screen, key_resp_for_start_trial]
+    Start_trial_screenComponents = [background_start_trial_screen, text__for_start_trial_screen, key_resp_for_start_trial, image_MARK]
     for thisComponent in Start_trial_screenComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -1355,6 +1380,15 @@ for thisTest_trial in Test_trials:
                 key_resp_for_start_trial.rt = _key_resp_for_start_trial_allKeys[-1].rt
                 # a response ends the routine
                 continueRoutine = False
+        
+        # *image_MARK* updates
+        if image_MARK.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            image_MARK.frameNStart = frameN  # exact frame index
+            image_MARK.tStart = t  # local t and not account for scr refresh
+            image_MARK.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(image_MARK, 'tStartRefresh')  # time at next scr refresh
+            image_MARK.setAutoDraw(True)
         
         # check for quit (typically the Esc key)
         if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
