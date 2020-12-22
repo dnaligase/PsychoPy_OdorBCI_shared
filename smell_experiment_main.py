@@ -208,7 +208,7 @@ background_start_trial_screen = visual.Rect(
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
     text='Нажмите на джойстик\nдля подачи аромата',
     font='Arial',
-    pos=(0, 0), height=0.07, wrapWidth=None, ori=0, 
+    pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
@@ -306,7 +306,7 @@ background_start_trial_screen = visual.Rect(
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
     text='Нажмите на джойстик\nдля подачи аромата',
     font='Arial',
-    pos=(0, 0), height=0.07, wrapWidth=None, ori=0, 
+    pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
