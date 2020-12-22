@@ -44,7 +44,7 @@ def process_psychopy_output(args):
         df.insert(df.columns.get_loc("latency") + 1, "latency_wo_fixation",
         df.latency - args.fixation_duration)
         df = df.loc[:, cols_to_extract]
-        dfs[name.split("/")[-1]] = df[df.correct_smell.notna()]
+        dfs[name.split(os.sep)[-1]] = df[df.correct_smell.notna()]
     
     # save concatenated dataframes if specified
     if args.concatenate:
