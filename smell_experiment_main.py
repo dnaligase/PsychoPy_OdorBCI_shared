@@ -40,7 +40,7 @@ os.chdir(_thisDir)
 psychopyVersion = '2020.2.4'
 expName = 'smell_experiment_main'  # from the Builder filename that created this script
 # expInfo = {'Name': '', 'age': '', 'sex': '', 'isCycle': 'None', 'session': '01'}
-keys_experiment = ['name', 'age', 'sex', 'isMenPhase', 'session', 'emulate']
+keys_experiment = ['name', 'age', 'sex', 'session', 'emulate']
 
 myDlg = gui.Dlg(title="CUBE: The Smell Experiment")
 myDlg.addText('Subject info')
@@ -49,7 +49,6 @@ myDlg.addField('Age:', 21)
 myDlg.addField('Sex:', choices=['Female', 'Male'])
 
 myDlg.addText('Additional Info')
-myDlg.addField('isMenstrual:', initial=False, tip="Check the box for subjects in their menstrual phase.")
 myDlg.addField('Session:', 1)
 myDlg.addField('Emulate:', initial=False, tip="Check the box to run experiment offline.")
 

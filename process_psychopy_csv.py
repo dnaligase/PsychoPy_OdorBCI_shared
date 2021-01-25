@@ -19,7 +19,7 @@ from datetime import datetime
 filedir = os.path.abspath('')
 
 cols_to_extract = ["correct_smell", "correct_symbol", "image_for_study", "correct_key", "correct_key_test",
- "key_resp_test_trial.keys", "latency", "latency_wo_fixation", "name", "age", "sex", "isMenPhase", "session", "date", "expName",
+ "key_resp_test_trial.keys", "latency", "latency_wo_fixation", "name", "age", "sex", "session", "date", "expName",
  "psychopyVersion", "frameRate"]
 
 
