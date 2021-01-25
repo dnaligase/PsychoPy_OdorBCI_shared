@@ -40,7 +40,7 @@ os.chdir(_thisDir)
 psychopyVersion = '2020.2.4'
 expName = 'smell_experiment_main'  # from the Builder filename that created this script
 # expInfo = {'Name': '', 'age': '', 'sex': '', 'isCycle': 'None', 'session': '01'}
-keys_experiment = ['name', 'age', 'sex', 'isMenPhase', 'session']
+keys_experiment = ['name', 'age', 'sex', 'isMenPhase', 'session', 'emulate']
 
 myDlg = gui.Dlg(title="CUBE: The Smell Experiment")
 myDlg.addText('Subject info')
@@ -51,6 +51,7 @@ myDlg.addField('Sex:', choices=['Female', 'Male'])
 myDlg.addText('Additional Info')
 myDlg.addField('isMenstrual:', initial=False, tip="Check the box for subjects in their menstrual phase.")
 myDlg.addField('Session:', 1)
+myDlg.addField('Emulate:', initial=False, tip="Check the box to run experiment offline.")
 
 ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
 # dlg = gui.DlgFromDict(dictionary=expInfo, sortKeys=True, title=expName)
@@ -63,6 +64,9 @@ expInfo = {key:value for key, value in zip(keys_experiment, ok_data)}
 expInfo['date'] = data.getDateStr()  # add a simple timestamp
 expInfo['expName'] = expName
 expInfo['psychopyVersion'] = psychopyVersion
+
+isEmulate = expInfo['emulate'] # store bool value
+
 # Data file name stem = absolute path + name; later add .psyexp, .csv, .log, etc
 filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['name'], expName, expInfo['date'])
 # An ExperimentHandler isn't essential but helps with data saving
@@ -162,21 +166,24 @@ def close_current_capsule(smell_correct):
     print("The answer is: ")
     print(ser.readline().decode("ascii"))
     
+if isEmulate:
+    print(Fore.GREEN + "Initialized successfully as emulator.")
+else:
+    print(Fore.GREEN + "Initialized successfully.")
     
-print(Fore.GREEN + "Initialized successfully.")
 print("limit_study =", limit_study)
 print("limit_test =", limit_test)
 print(Fore.YELLOW + "fixation_point_duration =", fixation_point_duration)
 #open port
 continueRoutine = True
-while continueRoutine:
+while continueRoutine and not isEmulate:
     try:
         ser = serial.Serial(**settings)
         print(Fore.GREEN + "The port has been opened. May the experiment begin!")
         break
             
     except (FileNotFoundError, serial.SerialException): 
-        print(Fore.YELLOW + "Arduino connection error. Double check the COM-port!")
+        print(Fore.RED + "Arduino connection error. Double check the COM-port!")
         askedInput = str(input(">>>Want to start over? Type Y or N:\n")).lower()
         if askedInput == "y":
             continue
@@ -184,7 +191,7 @@ while continueRoutine:
             print("Finishing experiment...")
             core.quit()
         else:
-            print(Fore.RED + "Didn't get your input. Try Y or N next time." + "\n" + Fore.MAGENTA + "Trying to open the port now...")
+            print(Fore.YELLOW + "Didn't get your input. Try Y or N next time." + "\n" + Fore.MAGENTA + "Trying to open the port now...")
 
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
@@ -786,7 +793,7 @@ for thisStudy_trial in Study_trials:
             continue
     print ('random smell#', smell_correct)
     #open port and eject stimulus
-    eject(smell_correct)
+    if not isEmulate: eject(smell_correct)
     
     #set correct symbol
     correct_symbol=symbols[smell_correct]
@@ -1073,7 +1080,7 @@ for thisStudy_trial in Study_trials:
     continueRoutine = True
     # update component parameters for each repeat
     #shut down current working capsule (stops stimulus)
-    close_current_capsule(smell_correct)
+    if not isEmulate: close_current_capsule(smell_correct)
     
   
     
@@ -1537,7 +1544,7 @@ for thisTest_trial in Test_trials:
     print ('random smell#', smell_correct)
     
     #open port and eject stimulus
-    eject(smell_correct)
+    if not isEmulate: eject(smell_correct)
     
     #set correct symbol
     correct_symbol=symbols[smell_correct]
@@ -1823,7 +1830,7 @@ for thisTest_trial in Test_trials:
     continueRoutine = True
     # update component parameters for each repeat
     #shut down current working capsule (stops stimulus)
-    close_current_capsule(smell_correct)
+    if not isEmulate: close_current_capsule(smell_correct)
     
        
     #checks the counter to finish Test session
@@ -1949,11 +1956,14 @@ for thisTest_trial in Test_trials:
     thisExp.nextEntry()
     
 #close the port
-ser.close()
-print(Back.YELLOW + f"Experiment has been finished with the total score of: {pressedCorrect_counter / (limit_test * 4)}")
+if not isEmulate:
+    ser.close()
+    if not ser.isOpen():
+        print(Fore.GREEN + "Port has been successfully closed")
+        
+print(Fore.YELLOW + f"Experiment has been finished with the total score of: {pressedCorrect_counter / (limit_test * 4)}")
 
-if not ser.isOpen():
-    print(Fore.GREEN + "Port has been successfully closed")
+
     
 # ------Prepare to start Routine "end_screen"-------
 continueRoutine = True
