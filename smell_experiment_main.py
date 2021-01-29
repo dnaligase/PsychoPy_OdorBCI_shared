@@ -39,7 +39,6 @@ os.chdir(_thisDir)
 # Store info about the experiment session
 psychopyVersion = '2020.2.4'
 expName = 'smell_experiment_main'  # from the Builder filename that created this script
-# expInfo = {'Name': '', 'age': '', 'sex': '', 'isCycle': 'None', 'session': '01'}
 keys_experiment = ['name', 'age', 'sex', 'session', 'emulate']
 
 myDlg = gui.Dlg(title="CUBE: The Smell Experiment")
@@ -166,7 +165,7 @@ def close_current_capsule(smell_correct):
     print(ser.readline().decode("ascii"))
     
 if isEmulate:
-    print(Fore.GREEN + "Initialized successfully as emulator.")
+    print(Fore.GREEN + "Initialized successfully as EMULATOR.")
 else:
     print(Fore.GREEN + "Initialized successfully.")
     
@@ -195,12 +194,13 @@ while continueRoutine and not isEmulate:
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
 text_welcome_screen = visual.TextStim(win=win, name='text_welcome_screen',
-    text='Прослушайте задание.\n\nДля начала эксперимента нажмите на джойстик.',
+    text='Прослушайте задание.\n\nДля начала эксперимента нажмите на кнопку.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=0.0);
+
 key_resp = keyboard.Keyboard()
 # Initialize components for Routine "Start_trial_screen"
 Start_trial_screenClock = core.Clock()
@@ -212,7 +212,7 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите на джойстик\nдля подачи аромата',
+    text='Нажмите на кнопку\nдля подачи аромата',
     font='Arial',
     pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
@@ -226,6 +226,7 @@ image_MARK = visual.ImageStim(
     color=[1,1,1], colorSpace='rgb', opacity=1,
     flipHoriz=False, flipVert=False,
     texRes=128, interpolate=True, depth=-3.0)
+
 key_resp_for_start_trial = keyboard.Keyboard()
 # Initialize components for Routine "Pause_screen"
 Pause_screenClock = core.Clock()
@@ -293,7 +294,7 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
 text_second_start = visual.TextStim(win=win, name='text_second_start',
-    text='Прослушайте задание для второй части эксперимента.\n\nНажмите на джойстик.',
+    text='Прослушайте задание для второй части эксперимента.\n\nНажмите на кнопку.',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -310,7 +311,7 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите на джойстик\nдля подачи аромата',
+    text='Нажмите на кнопку\nдля подачи аромата',
     font='Arial',
     pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
@@ -501,7 +502,7 @@ while continueRoutine:
         win.callOnFlip(key_resp.clock.reset)  # t=0 on next screen flip
         win.callOnFlip(key_resp.clearEvents, eventType='keyboard')  # clear events on next screen flip
     if key_resp.status == STARTED and not waitOnFlip:
-        theseKeys = key_resp.getKeys(keyList=['q', 'space'], waitRelease=False)
+        theseKeys = key_resp.getKeys(keyList=['q', '1'], waitRelease=True)
         _key_resp_allKeys.extend(theseKeys)
         if len(_key_resp_allKeys):
             key_resp.keys = _key_resp_allKeys[-1].name  # just the last key pressed
@@ -622,7 +623,7 @@ for thisStudy_trial in Study_trials:
             win.callOnFlip(key_resp_for_start_trial.clock.reset)  # t=0 on next screen flip
             win.callOnFlip(key_resp_for_start_trial.clearEvents, eventType='keyboard')  # clear events on next screen flip
         if key_resp_for_start_trial.status == STARTED and not waitOnFlip:
-            theseKeys = key_resp_for_start_trial.getKeys(keyList=['q', 'space'], waitRelease=False)
+            theseKeys = key_resp_for_start_trial.getKeys(keyList=['q', '1'], waitRelease=False)
             _key_resp_for_start_trial_allKeys.extend(theseKeys)
             if len(_key_resp_for_start_trial_allKeys):
                 key_resp_for_start_trial.keys = _key_resp_for_start_trial_allKeys[-1].name  # just the last key pressed
@@ -821,7 +822,7 @@ for thisStudy_trial in Study_trials:
     #add data to the file
     thisExp.addData('correct_smell', smell_correct)
     thisExp.addData('correct_symbol', correct_symbol)
-    thisExp.addData('image_for_study', image_for_study)
+    thisExp.addData('image_selected', image_for_study)
     thisExp.addData('correct_key', correct_key)
     thisExp.addData('study_number', study_number)
     thisExp.addData('trial_number', trial_number)
@@ -1258,7 +1259,7 @@ while continueRoutine:
         win.callOnFlip(key_resp_second_start.clock.reset)  # t=0 on next screen flip
         win.callOnFlip(key_resp_second_start.clearEvents, eventType='keyboard')  # clear events on next screen flip
     if key_resp_second_start.status == STARTED and not waitOnFlip:
-        theseKeys = key_resp_second_start.getKeys(keyList=['q', 'space'], waitRelease=False)
+        theseKeys = key_resp_second_start.getKeys(keyList=['q', '1'], waitRelease=True)
         _key_resp_second_start_allKeys.extend(theseKeys)
         if len(_key_resp_second_start_allKeys):
             key_resp_second_start.keys = _key_resp_second_start_allKeys[-1].name  # just the last key pressed
@@ -1379,7 +1380,7 @@ for thisTest_trial in Test_trials:
             win.callOnFlip(key_resp_for_start_trial.clock.reset)  # t=0 on next screen flip
             win.callOnFlip(key_resp_for_start_trial.clearEvents, eventType='keyboard')  # clear events on next screen flip
         if key_resp_for_start_trial.status == STARTED and not waitOnFlip:
-            theseKeys = key_resp_for_start_trial.getKeys(keyList=['q', 'space'], waitRelease=False)
+            theseKeys = key_resp_for_start_trial.getKeys(keyList=['q', '1'], waitRelease=False)
             _key_resp_for_start_trial_allKeys.extend(theseKeys)
             if len(_key_resp_for_start_trial_allKeys):
                 key_resp_for_start_trial.keys = _key_resp_for_start_trial_allKeys[-1].name  # just the last key pressed
@@ -1572,7 +1573,7 @@ for thisTest_trial in Test_trials:
     #add data to the file
     thisExp.addData('correct_smell', smell_correct)
     thisExp.addData('correct_symbol', correct_symbol)
-    thisExp.addData('image_for_study', image_for_study)
+    thisExp.addData('image_selected', image_for_test)
     thisExp.addData('correct_key_test', correct_key_test)
     thisExp.addData('test_number', test_number)
     thisExp.addData('trial_number', trial_number)

@@ -18,7 +18,7 @@ from datetime import datetime
 
 filedir = os.path.abspath('')
 
-cols_to_extract = ["correct_smell", "correct_symbol", "image_for_study", "correct_key", "correct_key_test",
+cols_to_extract = ["correct_smell", "correct_symbol", "image_selected", "correct_key", "correct_key_test",
  "key_resp_test_trial.keys", "latency", "latency_wo_fixation", "name", "age", "sex", "session", "date", "expName",
  "psychopyVersion", "frameRate"]
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     parser.set_defaults(func=process_psychopy_output)
     args = parser.parse_args()
     args.func(args)
-    print(">>>Success!<<<")
+    print(">>>Success!<<<\nProceed to {}data_processed".format(os.sep))
 
 
 
