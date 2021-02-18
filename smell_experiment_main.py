@@ -111,7 +111,7 @@ random.seed()
 #initialize list for smells
 smells=[1,2,3,4]
 #initialize odor list
-odor_keys_list = ['9', '6', '7', '8']
+odor_keys_list = ['4', '5', '7', '8']
 #create odor counter
 odor_dict = {key: 0 for key in odor_keys_list}
 #initialize list for symbols
@@ -131,7 +131,7 @@ trial_number = 0
 #set limiter for each stimulus
 limit_study = 1
 limit_test = 1
-fixation_point_duration = 5.000000
+fixation_point_duration = 10.000000
 
 
 class bcolors:
@@ -237,13 +237,6 @@ backgound_for_pause_creen = visual.Rect(
     lineWidth=1, lineColor=[1,1,1], lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
-    text='+',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='red', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-1.0);
 # Initialize components for Routine "code_study"
 code_studyClock = core.Clock()
 # Initialize components for Routine "Smell_creen_with_code"
@@ -255,13 +248,6 @@ background_for_smell_screen = visual.Rect(
     lineWidth=1, lineColor=[1,1,1], lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-fixation_point_during_smell = visual.TextStim(win=win, name='fixation_point_during_smell',
-    text='+',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='red', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-1.0);
 # Initialize components for Routine "study_trial"
 study_trialClock = core.Clock()
 polygon_study_background = visual.Rect(
@@ -323,7 +309,7 @@ image_MARK = visual.ImageStim(
     image='gesture-press.png', mask=None,
     ori=0, pos=(0.0, 0.15), size=(0.3, 0.3),
     color=[1,1,1], colorSpace='rgb', opacity=1,
-    flipHoriz=False, flipVert=False,
+    flipHoriz=True, flipVert=False,
     texRes=128, interpolate=True, depth=-3.0)
 key_resp_for_start_trial = keyboard.Keyboard()
 # Initialize components for Routine "Pause_screen"
@@ -335,13 +321,6 @@ backgound_for_pause_creen = visual.Rect(
     lineWidth=1, lineColor=[1,1,1], lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
-cross_for_pause_screen = visual.TextStim(win=win, name='cross_for_pause_screen',
-    text='+',
-    font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
-    color='red', colorSpace='rgb', opacity=1, 
-    languageStyle='LTR',
-    depth=-1.0);
 # Initialize components for Routine "code_test"
 code_testClock = core.Clock()
 # Initialize components for Routine "Smell_creen_with_code"
@@ -676,94 +655,6 @@ for thisStudy_trial in Study_trials:
     # the Routine "Start_trial_screen" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
-    # ------Prepare to start Routine "Pause_screen"-------
-    continueRoutine = True
-    routineTimer.add(2.000000)
-    # update component parameters for each repeat
-    # keep track of which components have finished
-    Pause_screenComponents = [backgound_for_pause_creen, cross_for_pause_screen]
-    for thisComponent in Pause_screenComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    Pause_screenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-    
-    # -------Run Routine "Pause_screen"-------
-    while continueRoutine and routineTimer.getTime() > 0:
-        # get current time
-        t = Pause_screenClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=Pause_screenClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        # *backgound_for_pause_creen* updates
-        if backgound_for_pause_creen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            backgound_for_pause_creen.frameNStart = frameN  # exact frame index
-            backgound_for_pause_creen.tStart = t  # local t and not account for scr refresh
-            backgound_for_pause_creen.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(backgound_for_pause_creen, 'tStartRefresh')  # time at next scr refresh
-            backgound_for_pause_creen.setAutoDraw(True)
-        if backgound_for_pause_creen.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > backgound_for_pause_creen.tStartRefresh + 2.0-frameTolerance:
-                # keep track of stop time/frame for later
-                backgound_for_pause_creen.tStop = t  # not accounting for scr refresh
-                backgound_for_pause_creen.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(backgound_for_pause_creen, 'tStopRefresh')  # time at next scr refresh
-                backgound_for_pause_creen.setAutoDraw(False)
-        
-        # *cross_for_pause_screen* updates
-        if cross_for_pause_screen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            cross_for_pause_screen.frameNStart = frameN  # exact frame index
-            cross_for_pause_screen.tStart = t  # local t and not account for scr refresh
-            cross_for_pause_screen.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(cross_for_pause_screen, 'tStartRefresh')  # time at next scr refresh
-            cross_for_pause_screen.setAutoDraw(True)
-        if cross_for_pause_screen.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > cross_for_pause_screen.tStartRefresh + 2-frameTolerance:
-                # keep track of stop time/frame for later
-                cross_for_pause_screen.tStop = t  # not accounting for scr refresh
-                cross_for_pause_screen.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(cross_for_pause_screen, 'tStopRefresh')  # time at next scr refresh
-                cross_for_pause_screen.setAutoDraw(False)
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in Pause_screenComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-    
-    # -------Ending Routine "Pause_screen"-------
-    for thisComponent in Pause_screenComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    Study_trials.addData('backgound_for_pause_creen.started', backgound_for_pause_creen.tStartRefresh)
-    Study_trials.addData('backgound_for_pause_creen.stopped', backgound_for_pause_creen.tStopRefresh)
-    Study_trials.addData('cross_for_pause_screen.started', cross_for_pause_screen.tStartRefresh)
-    Study_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
-    
     # ------Prepare to start Routine "code_study"-------
     
     
@@ -912,7 +803,7 @@ for thisStudy_trial in Study_trials:
             background_for_smell_screen.setAutoDraw(True)
         if background_for_smell_screen.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + 2-frameTolerance:
+            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + fixation_point_duration-frameTolerance:
                 # keep track of stop time/frame for later
                 background_for_smell_screen.tStop = t  # not accounting for scr refresh
                 background_for_smell_screen.frameNStop = frameN  # exact frame index
@@ -929,7 +820,7 @@ for thisStudy_trial in Study_trials:
             fixation_point_during_smell.setAutoDraw(True)
         if fixation_point_during_smell.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > fixation_point_during_smell.tStartRefresh + 2-frameTolerance:
+            if tThisFlipGlobal > fixation_point_during_smell.tStartRefresh + fixation_point_duration-frameTolerance:
                 # keep track of stop time/frame for later
                 fixation_point_during_smell.tStop = t  # not accounting for scr refresh
                 fixation_point_during_smell.frameNStop = frameN  # exact frame index
@@ -1433,94 +1324,6 @@ for thisTest_trial in Test_trials:
     # the Routine "Start_trial_screen" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
-    # ------Prepare to start Routine "Pause_screen"-------
-    continueRoutine = True
-    routineTimer.add(2.000000)
-    # update component parameters for each repeat
-    # keep track of which components have finished
-    Pause_screenComponents = [backgound_for_pause_creen, cross_for_pause_screen]
-    for thisComponent in Pause_screenComponents:
-        thisComponent.tStart = None
-        thisComponent.tStop = None
-        thisComponent.tStartRefresh = None
-        thisComponent.tStopRefresh = None
-        if hasattr(thisComponent, 'status'):
-            thisComponent.status = NOT_STARTED
-    # reset timers
-    t = 0
-    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
-    Pause_screenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
-    frameN = -1
-    
-    # -------Run Routine "Pause_screen"-------
-    while continueRoutine and routineTimer.getTime() > 0:
-        # get current time
-        t = Pause_screenClock.getTime()
-        tThisFlip = win.getFutureFlipTime(clock=Pause_screenClock)
-        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
-        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
-        # update/draw components on each frame
-        
-        # *backgound_for_pause_creen* updates
-        if backgound_for_pause_creen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            backgound_for_pause_creen.frameNStart = frameN  # exact frame index
-            backgound_for_pause_creen.tStart = t  # local t and not account for scr refresh
-            backgound_for_pause_creen.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(backgound_for_pause_creen, 'tStartRefresh')  # time at next scr refresh
-            backgound_for_pause_creen.setAutoDraw(True)
-        if backgound_for_pause_creen.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > backgound_for_pause_creen.tStartRefresh + 2.0-frameTolerance:
-                # keep track of stop time/frame for later
-                backgound_for_pause_creen.tStop = t  # not accounting for scr refresh
-                backgound_for_pause_creen.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(backgound_for_pause_creen, 'tStopRefresh')  # time at next scr refresh
-                backgound_for_pause_creen.setAutoDraw(False)
-        
-        # *cross_for_pause_screen* updates
-        if cross_for_pause_screen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
-            # keep track of start time/frame for later
-            cross_for_pause_screen.frameNStart = frameN  # exact frame index
-            cross_for_pause_screen.tStart = t  # local t and not account for scr refresh
-            cross_for_pause_screen.tStartRefresh = tThisFlipGlobal  # on global time
-            win.timeOnFlip(cross_for_pause_screen, 'tStartRefresh')  # time at next scr refresh
-            cross_for_pause_screen.setAutoDraw(True)
-        if cross_for_pause_screen.status == STARTED:
-            # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > cross_for_pause_screen.tStartRefresh + 2-frameTolerance:
-                # keep track of stop time/frame for later
-                cross_for_pause_screen.tStop = t  # not accounting for scr refresh
-                cross_for_pause_screen.frameNStop = frameN  # exact frame index
-                win.timeOnFlip(cross_for_pause_screen, 'tStopRefresh')  # time at next scr refresh
-                cross_for_pause_screen.setAutoDraw(False)
-        
-        # check for quit (typically the Esc key)
-        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
-            core.quit()
-        
-        # check if all components have finished
-        if not continueRoutine:  # a component has requested a forced-end of Routine
-            break
-        continueRoutine = False  # will revert to True if at least one component still running
-        for thisComponent in Pause_screenComponents:
-            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
-                continueRoutine = True
-                break  # at least one component has not yet finished
-        
-        # refresh the screen
-        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
-            win.flip()
-    
-    # -------Ending Routine "Pause_screen"-------
-    for thisComponent in Pause_screenComponents:
-        if hasattr(thisComponent, "setAutoDraw"):
-            thisComponent.setAutoDraw(False)
-    Test_trials.addData('backgound_for_pause_creen.started', backgound_for_pause_creen.tStartRefresh)
-    Test_trials.addData('backgound_for_pause_creen.stopped', backgound_for_pause_creen.tStopRefresh)
-    Test_trials.addData('cross_for_pause_screen.started', cross_for_pause_screen.tStartRefresh)
-    Test_trials.addData('cross_for_pause_screen.stopped', cross_for_pause_screen.tStopRefresh)
-    
     # ------Prepare to start Routine "code_test"-------
     test_display_order=['t','s','c','z']
     
@@ -1663,7 +1466,7 @@ for thisTest_trial in Test_trials:
             background_for_smell_screen.setAutoDraw(True)
         if background_for_smell_screen.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + 2-frameTolerance:
+            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + fixation_point_duration-frameTolerance:
                 # keep track of stop time/frame for later
                 background_for_smell_screen.tStop = t  # not accounting for scr refresh
                 background_for_smell_screen.frameNStop = frameN  # exact frame index
@@ -1680,7 +1483,7 @@ for thisTest_trial in Test_trials:
             fixation_point_during_smell.setAutoDraw(True)
         if fixation_point_during_smell.status == STARTED:
             # is it time to stop? (based on global clock, using actual start)
-            if tThisFlipGlobal > fixation_point_during_smell.tStartRefresh + 2-frameTolerance:
+            if tThisFlipGlobal > fixation_point_during_smell.tStartRefresh + fixation_point_duration-frameTolerance:
                 # keep track of stop time/frame for later
                 fixation_point_during_smell.tStop = t  # not accounting for scr refresh
                 fixation_point_during_smell.frameNStop = frameN  # exact frame index

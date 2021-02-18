@@ -69,12 +69,12 @@ if __name__ == "__main__":
 
     group.add_argument("-n", "--names", nargs="+", help="Allows to enter specific file(s)")
     parser.add_argument("output_dir", nargs="?", default="data_processed", type=str, help="Dir to save output to (Default: data_processed)")
-    parser.add_argument("fixation_duration", nargs="?", default=5.000000, type=float, help="Fixation point duration (Default: 5.000000)")
+    parser.add_argument("fixation_duration", nargs="?", default=10.000000, type=float, help="Fixation point duration (Default: 5.000000)")
     
     parser.set_defaults(func=process_psychopy_output)
     args = parser.parse_args()
     args.func(args)
-    print(">>>Success!<<<\nProceed to {}data_processed".format(os.sep))
+    print(">>>Success!<<<\nProceed to {}{}".format(os.sep, args.output_dir))
 
 
 
