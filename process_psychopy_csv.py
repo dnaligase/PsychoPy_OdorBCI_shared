@@ -44,7 +44,8 @@ def process_psychopy_output(args):
         df.insert(df.columns.get_loc("latency") + 1, "latency_wo_fixation",
         df.latency - args.fixation_duration)
         df = df.loc[:, cols_to_extract]
-        dfs[name.split(os.sep)[-1]] = df[df.correct_smell.notna()]
+        df.correct_smell.fillna(5.0, inplace=True) # assign the value to idle button press
+        dfs[name.split(os.sep)[-1]] = df.iloc[:-1, :]
     
     # save concatenated dataframes if specified
     if args.concatenate:
