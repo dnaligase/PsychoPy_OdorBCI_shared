@@ -79,9 +79,11 @@ logging.console.setLevel(logging.WARNING)  # this outputs to the screen, not a f
 endExpNow = False  # flag for 'escape' or other condition => quit the exp
 frameTolerance = 0.001  # how close to onset before 'same' frame
 # Start Code - component code to be run before the window creation
-# Setup the Window
+
+# Setup the Window. Sreen=1 to run on the projector
+
 win = visual.Window(
-    size=(612, 384), fullscr=False, screen=0, 
+    size=(612, 384), fullscr=True, screen=0, 
     winType='pyglet', allowGUI=False, allowStencil=False,
     monitor='testMonitor', color=[0,0,0], colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -131,7 +133,8 @@ trial_number = 0
 #set limiter for each stimulus
 limit_study = 1
 limit_test = 1
-fixation_point_duration = 10.000000
+fixation_point_duration = 2.000000
+fixation_point_duration_green = 10.000000
 
 
 class bcolors:
@@ -194,7 +197,7 @@ while continueRoutine and not isEmulate:
 # Initialize components for Routine "Welcome_screen"
 Welcome_screenClock = core.Clock()
 text_welcome_screen = visual.TextStim(win=win, name='text_welcome_screen',
-    text='Прослушайте задание.\n\nДля начала эксперимента нажмите на кнопку.',
+    text='Для начала эксперимента\nнажмите на кнопку',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -212,9 +215,9 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите на кнопку\nдля подачи аромата',
+    text='Задержите дыхание на выдохе\n\nНажмите на кнопку\nдля подачи аромата',
     font='Arial',
-    pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
+    pos=(0, -0.15), height=0.05, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
@@ -248,6 +251,17 @@ background_for_smell_screen = visual.Rect(
     lineWidth=1, lineColor=[1,1,1], lineColorSpace='rgb',
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
+
+# Initialize components for Routine "Smell_creen_with_code_green"
+Smell_creen_with_code_greenClock = core.Clock()
+background_for_smell_screen = visual.Rect(
+    win=win, name='background_for_smell_screen',
+    width=(2, 2)[0], height=(2, 2)[1],
+    ori=0, pos=(0, 0),
+    lineWidth=1, lineColor=[1,1,1], lineColorSpace='rgb',
+    fillColor='white', fillColorSpace='rgb',
+    opacity=1, depth=0.0, interpolate=True)
+
 # Initialize components for Routine "study_trial"
 study_trialClock = core.Clock()
 polygon_study_background = visual.Rect(
@@ -280,7 +294,7 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "second_start__screen"
 second_start__screenClock = core.Clock()
 text_second_start = visual.TextStim(win=win, name='text_second_start',
-    text='Прослушайте задание для второй части эксперимента.\n\nНажмите на кнопку.',
+    text='Обучающая сессия завершена\n\nНажмите на кнопку для продолжения',
     font='Arial',
     pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
@@ -297,9 +311,9 @@ background_start_trial_screen = visual.Rect(
     fillColor='white', fillColorSpace='rgb',
     opacity=1, depth=0.0, interpolate=True)
 text__for_start_trial_screen = visual.TextStim(win=win, name='text__for_start_trial_screen',
-    text='Нажмите на кнопку\nдля подачи аромата',
+    text='Задержите дыхание на выдохе\n\nНажмите на кнопку\nдля подачи аромата',
     font='Arial',
-    pos=(0, -0.15), height=0.07, wrapWidth=None, ori=0, 
+    pos=(0, -0.15), height=0.05, wrapWidth=None, ori=0, 
     color='black', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
@@ -339,6 +353,13 @@ fixation_point_during_smell = visual.TextStim(win=win, name='fixation_point_duri
     color='red', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=-1.0);
+fixation_point_during_smell_green = visual.TextStim(win=win, name='fixation_point_during_smell_green',
+    text='+',
+    font='Arial',
+    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    color='green', colorSpace='rgb', opacity=1, 
+    languageStyle='LTR',
+    depth=-1.0);
 # Initialize components for Routine "test_trial"
 test_trialClock = core.Clock()
 background_test_trail = visual.Rect(
@@ -371,9 +392,9 @@ polygon_blank_500 = visual.Rect(
 # Initialize components for Routine "end_screen"
 end_screenClock = core.Clock()
 text_end_screen = visual.TextStim(win=win, name='text_end_screen',
-    text='Спасибо!\n\nЭксперимент завершен.',
+    text='Эксперимент завершен\n\nСпасибо!\nОставайтесь в кресле',
     font='Arial',
-    pos=(0, 0), height=0.1, wrapWidth=None, ori=0, 
+    pos=(0, 0), height=0.05, wrapWidth=None, ori=0, 
     color='white', colorSpace='rgb', opacity=1, 
     languageStyle='LTR',
     depth=0.0);
@@ -852,6 +873,94 @@ for thisStudy_trial in Study_trials:
     Study_trials.addData('background_for_smell_screen.stopped', background_for_smell_screen.tStopRefresh)
     Study_trials.addData('fixation_point_during_smell.started', fixation_point_during_smell.tStartRefresh)
     Study_trials.addData('fixation_point_during_smell.stopped', fixation_point_during_smell.tStopRefresh)
+
+# ------Prepare to start Routine "Smell_creen_with_code_green"-------
+    continueRoutine = True
+    routineTimer.add(fixation_point_duration_green)
+    # update component parameters for each repeat
+    # keep track of which components have finished
+    Smell_creen_with_code_greenComponents = [background_for_smell_screen, fixation_point_during_smell_green]
+    for thisComponent in Smell_creen_with_code_greenComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    Smell_creen_with_code_greenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "Smell_creen_with_code_green"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = Smell_creen_with_code_greenClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=Smell_creen_with_code_greenClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *background_for_smell_screen* updates
+        if background_for_smell_screen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            background_for_smell_screen.frameNStart = frameN  # exact frame index
+            background_for_smell_screen.tStart = t  # local t and not account for scr refresh
+            background_for_smell_screen.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(background_for_smell_screen, 'tStartRefresh')  # time at next scr refresh
+            background_for_smell_screen.setAutoDraw(True)
+        if background_for_smell_screen.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + fixation_point_duration_green-frameTolerance:
+                # keep track of stop time/frame for later
+                background_for_smell_screen.tStop = t  # not accounting for scr refresh
+                background_for_smell_screen.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(background_for_smell_screen, 'tStopRefresh')  # time at next scr refresh
+                background_for_smell_screen.setAutoDraw(False)
+        
+        # *fixation_point_during_smell_green* updates
+        if fixation_point_during_smell_green.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            fixation_point_during_smell_green.frameNStart = frameN  # exact frame index
+            fixation_point_during_smell_green.tStart = t  # local t and not account for scr refresh
+            fixation_point_during_smell_green.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(fixation_point_during_smell_green, 'tStartRefresh')  # time at next scr refresh
+            fixation_point_during_smell_green.setAutoDraw(True)
+        if fixation_point_during_smell_green.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > fixation_point_during_smell_green.tStartRefresh + fixation_point_duration_green-frameTolerance:
+                # keep track of stop time/frame for later
+                fixation_point_during_smell_green.tStop = t  # not accounting for scr refresh
+                fixation_point_during_smell_green.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(fixation_point_during_smell_green, 'tStopRefresh')  # time at next scr refresh
+                fixation_point_during_smell_green.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in Smell_creen_with_code_greenComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # -------Ending Routine "Smell_creen_with_code_green"-------
+    for thisComponent in Smell_creen_with_code_greenComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    Study_trials.addData('background_for_smell_screen.started', background_for_smell_screen.tStartRefresh)
+    Study_trials.addData('background_for_smell_screen.stopped', background_for_smell_screen.tStopRefresh)
+    Study_trials.addData('fixation_point_during_smell_green.started', fixation_point_during_smell.tStartRefresh)
+    Study_trials.addData('fixation_point_during_smell_green.stopped', fixation_point_during_smell.tStopRefresh)
     
     # ------Prepare to start Routine "study_trial"-------
     continueRoutine = True
@@ -1515,6 +1624,94 @@ for thisTest_trial in Test_trials:
     Test_trials.addData('background_for_smell_screen.stopped', background_for_smell_screen.tStopRefresh)
     Test_trials.addData('fixation_point_during_smell.started', fixation_point_during_smell.tStartRefresh)
     Test_trials.addData('fixation_point_during_smell.stopped', fixation_point_during_smell.tStopRefresh)
+
+# ------Prepare to start Routine "Smell_creen_with_code_green"-------
+    continueRoutine = True
+    routineTimer.add(fixation_point_duration_green)
+    # update component parameters for each repeat
+    # keep track of which components have finished
+    Smell_creen_with_code_greenComponents = [background_for_smell_screen, fixation_point_during_smell_green]
+    for thisComponent in Smell_creen_with_code_greenComponents:
+        thisComponent.tStart = None
+        thisComponent.tStop = None
+        thisComponent.tStartRefresh = None
+        thisComponent.tStopRefresh = None
+        if hasattr(thisComponent, 'status'):
+            thisComponent.status = NOT_STARTED
+    # reset timers
+    t = 0
+    _timeToFirstFrame = win.getFutureFlipTime(clock="now")
+    Smell_creen_with_code_greenClock.reset(-_timeToFirstFrame)  # t0 is time of first possible flip
+    frameN = -1
+    
+    # -------Run Routine "Smell_creen_with_code_green"-------
+    while continueRoutine and routineTimer.getTime() > 0:
+        # get current time
+        t = Smell_creen_with_code_greenClock.getTime()
+        tThisFlip = win.getFutureFlipTime(clock=Smell_creen_with_code_greenClock)
+        tThisFlipGlobal = win.getFutureFlipTime(clock=None)
+        frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
+        # update/draw components on each frame
+        
+        # *background_for_smell_screen* updates
+        if background_for_smell_screen.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            background_for_smell_screen.frameNStart = frameN  # exact frame index
+            background_for_smell_screen.tStart = t  # local t and not account for scr refresh
+            background_for_smell_screen.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(background_for_smell_screen, 'tStartRefresh')  # time at next scr refresh
+            background_for_smell_screen.setAutoDraw(True)
+        if background_for_smell_screen.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > background_for_smell_screen.tStartRefresh + fixation_point_duration_green-frameTolerance:
+                # keep track of stop time/frame for later
+                background_for_smell_screen.tStop = t  # not accounting for scr refresh
+                background_for_smell_screen.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(background_for_smell_screen, 'tStopRefresh')  # time at next scr refresh
+                background_for_smell_screen.setAutoDraw(False)
+        
+        # *fixation_point_during_smell_green* updates
+        if fixation_point_during_smell_green.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            fixation_point_during_smell_green.frameNStart = frameN  # exact frame index
+            fixation_point_during_smell_green.tStart = t  # local t and not account for scr refresh
+            fixation_point_during_smell_green.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(fixation_point_during_smell_green, 'tStartRefresh')  # time at next scr refresh
+            fixation_point_during_smell_green.setAutoDraw(True)
+        if fixation_point_during_smell_green.status == STARTED:
+            # is it time to stop? (based on global clock, using actual start)
+            if tThisFlipGlobal > fixation_point_during_smell_green.tStartRefresh + fixation_point_duration_green-frameTolerance:
+                # keep track of stop time/frame for later
+                fixation_point_during_smell_green.tStop = t  # not accounting for scr refresh
+                fixation_point_during_smell_green.frameNStop = frameN  # exact frame index
+                win.timeOnFlip(fixation_point_during_smell_green, 'tStopRefresh')  # time at next scr refresh
+                fixation_point_during_smell_green.setAutoDraw(False)
+        
+        # check for quit (typically the Esc key)
+        if endExpNow or defaultKeyboard.getKeys(keyList=["escape"]):
+            core.quit()
+        
+        # check if all components have finished
+        if not continueRoutine:  # a component has requested a forced-end of Routine
+            break
+        continueRoutine = False  # will revert to True if at least one component still running
+        for thisComponent in Smell_creen_with_code_greenComponents:
+            if hasattr(thisComponent, "status") and thisComponent.status != FINISHED:
+                continueRoutine = True
+                break  # at least one component has not yet finished
+        
+        # refresh the screen
+        if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
+            win.flip()
+    
+    # -------Ending Routine "Smell_creen_with_code_green"-------
+    for thisComponent in Smell_creen_with_code_greenComponents:
+        if hasattr(thisComponent, "setAutoDraw"):
+            thisComponent.setAutoDraw(False)
+    Study_trials.addData('background_for_smell_screen.started', background_for_smell_screen.tStartRefresh)
+    Study_trials.addData('background_for_smell_screen.stopped', background_for_smell_screen.tStopRefresh)
+    Study_trials.addData('fixation_point_during_smell_green.started', fixation_point_during_smell.tStartRefresh)
+    Study_trials.addData('fixation_point_during_smell_green.stopped', fixation_point_during_smell.tStopRefresh)
     
     # ------Prepare to start Routine "test_trial"-------
 
@@ -1623,7 +1820,7 @@ for thisTest_trial in Test_trials:
     else:
         print(Fore.RED + f'TEST_TRIAL: Wrong key "{key_resp_test_trial.keys}" has been pressed.' + f'\nCorrect symbol: {correct_symbol}')
     if key_resp_test_trial.keys != None:  # we had a response
-        Test_trials.addData('latency', key_resp_test_trial.rt + fixation_point_duration)
+        Test_trials.addData('latency', key_resp_test_trial.rt + fixation_point_duration + fixation_point_duration_green)
     Test_trials.addData('key_resp_test_trial.started', key_resp_test_trial.tStartRefresh)
     Test_trials.addData('key_resp_test_trial.stopped', key_resp_test_trial.tStopRefresh)
     # the Routine "test_trial" was not non-slip safe, so reset the non-slip timer
@@ -1770,7 +1967,7 @@ print(Fore.YELLOW + f"Experiment has been finished with the total score of: {pre
     
 # ------Prepare to start Routine "end_screen"-------
 continueRoutine = True
-routineTimer.add(2.000000)
+routineTimer.add(10.000000)
 # update component parameters for each repeat
 key_resp_2.keys = []
 key_resp_2.rt = []
@@ -1808,7 +2005,7 @@ while continueRoutine and routineTimer.getTime() > 0:
         text_end_screen.setAutoDraw(True)
     if text_end_screen.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > text_end_screen.tStartRefresh + 2.0-frameTolerance:
+        if tThisFlipGlobal > text_end_screen.tStartRefresh + 10.0-frameTolerance:
             # keep track of stop time/frame for later
             text_end_screen.tStop = t  # not accounting for scr refresh
             text_end_screen.frameNStop = frameN  # exact frame index
@@ -1830,7 +2027,7 @@ while continueRoutine and routineTimer.getTime() > 0:
         win.callOnFlip(key_resp_2.clearEvents, eventType='keyboard')  # clear events on next screen flip
     if key_resp_2.status == STARTED:
         # is it time to stop? (based on global clock, using actual start)
-        if tThisFlipGlobal > key_resp_2.tStartRefresh + 2.0-frameTolerance:
+        if tThisFlipGlobal > key_resp_2.tStartRefresh + 10.0-frameTolerance:
             # keep track of stop time/frame for later
             key_resp_2.tStop = t  # not accounting for scr refresh
             key_resp_2.frameNStop = frameN  # exact frame index
