@@ -1073,6 +1073,7 @@ for thisStudy_trial in Study_trials:
         Study_trials.addData('key_resp_study_trial.rt', key_resp_study_trial.rt)
     Study_trials.addData('key_resp_study_trial.started', key_resp_study_trial.tStart)
     Study_trials.addData('key_resp_study_trial.stopped', key_resp_study_trial.tStop)
+    print(Fore.CYAN + f'Study trial count: {Study_trials.thisN}')
     # the Routine "study_trial" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset()
     
@@ -1816,6 +1817,7 @@ for thisTest_trial in Test_trials:
     Test_trials.addData('key_resp_test_trial.keys',key_resp_test_trial.keys)
     if key_resp_test_trial.keys == correct_key_test:
         print(Fore.MAGENTA + f'TEST_TRIAL: Correct key "{key_resp_test_trial.keys}" has been pressed.' + f'\nCorrect symbol: {correct_symbol}')
+        print(Fore.CYAN + f'Test trial count: {Test_trials.thisN}')
         pressedCorrect_counter += 1
     else:
         print(Fore.RED + f'TEST_TRIAL: Wrong key "{key_resp_test_trial.keys}" has been pressed.' + f'\nCorrect symbol: {correct_symbol}')
