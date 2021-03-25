@@ -19,7 +19,7 @@ from datetime import datetime
 filedir = os.path.abspath('')
 
 cols_to_extract = ["correct_smell", "correct_symbol", "image_selected", "correct_key", "correct_key_test",
- "key_resp_test_trial.keys", "latency", "latency_wo_fixation", "name", "age", "sex", "session", "date", "expName",
+ "key_resp_test_trial.keys", "latency", "latency_wo_fixation", "button_intervals", "name", "age", "sex", "session", "date", "expName",
  "psychopyVersion", "frameRate"]
 
 
@@ -43,6 +43,13 @@ def process_psychopy_output(args):
         df = pd.read_csv(fnames[i])
         df.insert(df.columns.get_loc("latency") + 1, "latency_wo_fixation",
         df.latency - args.fixation_duration)
+        
+        # collapse a columns into one
+        sum_for_buttons = df[["key_resp.rt", "key_resp.started", "key_resp_second_start.rt", "key_resp_second_start.started", "key_resp_for_start_trial.rt", "key_resp_for_start_trial.started"]].sum(axis=1)
+        
+        # find time intervals between button clicks
+        df["button_intervals"] = sum_for_buttons.diff()
+
         df = df.loc[:, cols_to_extract]
         df.correct_smell.fillna(5.0, inplace=True) # assign the value to idle button press
         dfs[name.split(os.sep)[-1]] = df.iloc[:-1, :]
@@ -70,7 +77,7 @@ if __name__ == "__main__":
 
     group.add_argument("-n", "--names", nargs="+", help="Allows to enter specific file(s)")
     parser.add_argument("output_dir", nargs="?", default="data_processed", type=str, help="Dir to save output to (Default: data_processed)")
-    parser.add_argument("fixation_duration", nargs="?", default=10.000000, type=float, help="Fixation point duration (Default: 5.000000)")
+    parser.add_argument("fixation_duration", nargs="?", default=12.000000, type=float, help="Fixation point duration (Default: 12.000000)")
     
     parser.set_defaults(func=process_psychopy_output)
     args = parser.parse_args()
